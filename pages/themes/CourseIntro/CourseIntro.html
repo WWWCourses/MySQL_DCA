@@ -24,6 +24,11 @@
 	<!-- custom -->
 	<link rel="stylesheet" href="../../../outfit/css/reveal.js.css">
 	<base target="_blank">
+	<style>
+		.reveal .keyconcept, .reveal .keyword{
+			color: #000;
+		}
+	</style>
 </head>
 <body>
 	<div class="reveal default center" data-transition-speed="default" data-background-transition="default">
@@ -51,7 +56,7 @@
 ##################### SLIDES START #####################
 ########################################################
 -->
-<section><h1>Course Introduction</h1></section>
+<section><h1>Introduction</h1></section>
 <section data-transition="zoom">
 	<section>
 		<div class="copyright">
@@ -79,7 +84,7 @@
 </section>
 
 
-<section data-min="5"><h1>About me</h1></section>
+<section data-min="5"><h1>Course Intro</h1></section>
 <section><h2>About me</h2>
 	<section><h3>Name: Iva E. Popova</h3>
 		<dl class="fa">
@@ -124,9 +129,6 @@
 		<p><a href="https://bg.linkedin.com/in/ivapopova">Iva E. Popova <i class="fa fa-linkedin-square"></i></a></p>
 	</section>
 </section>
-
-
-<section data-min="5"><h1>Course Resources</h1></section>
 <section><h2>Course Resources</h2>
 	<section><h3>Course Email</h3>
 		<p style="font-size: 1.3em; font-style: normal;">ProgressBG.WWW.Courses@gmail.com</p>
@@ -141,43 +143,311 @@
 			<dt><span class="note">All live examples/demos written by me during the lab will be uploaded to the course GitHub repo immediately after the labs</span>.</dt>
 		</dl>
 	</section>
-	<section><h3>codepen</h3>
+</section>
+
+
+<section data-min="10"><h1>Introduction to DB</h1></section>
+<section><h2>Introduction to DB</h2>
+	<section><h3>What is DB and why we need it?</h3>
+		<a href="./images/DBMS_Overview.png"><img src="./images/DBMS_Overview.png" alt="DBMS_Overview.png" style="height: 20vh;"></a>
 		<dl class="fa">
-			<dt><a href="http://codepen.io/ProgressWWWCourses/">ProgressWWWCourses</a></dt>
-			<dd>contains some old stuff, keep it here just for reference</dd>
+			<dt>Definition:</dt>
+				<dd><abbr>DB</abbr><dfn id="DB"><span>Data</span><span>Base</span></dfn></dd>
+				<dd>A structured set of data, organized to provide efficient retrieval.</dd>
+			<dt>Rationale:</dt>
+				<dd>A DB should be able to serve multiple users (clients) simultaneously.</dd>
+				<dd>A DB should be used for more than one task.</dd>
 		</dl>
 	</section>
-	<section><h3>Useful Sites</h3>
+	<section><h3>Types of Data Bases</h3>
+		<a href="./images/documentDB_vs_RDMS copy.png"><img src="./images/documentDB_vs_RDMS copy.png" alt="documentDB_vs_RDMS copy.png" style="height: 20vh;margin:0 auto .5em auto"></a>
 		<dl class="fa">
-			<dt>Usually, at the end of each topic, relative resources will be linked.</dt>
-			<dt>But all of them will be listed separated, as well:</dt>
-			<dd>Work in progress: <a href="../../readings/UsefulResources.html">Useful Resources</a></dd>
+			<dt>Relational (SQL)</dt>
+			<dd>Data are stored as <span class="note">relational tables</span></dd>
+			<dd>Data manipulations are done by <span class="note">Structured Query Language (SQL)</span>, based on Edgar Frank Codd’s work on the relational model for database management</dd>
+			<dt>Non-Relational (noSQL)</dt>
+			<dd>Developed in the late 2000s</dd>
+			<dd>Have flexible data models</dd>
+			<dd>Focus on scaling, fast queries, allowing for frequent application changes, and making programming simpler for developers.</dd>
+		</dl>
+	</section>
+</section>
+<section><h2>Data Models</h2>
+	<section><h3>Definition</h3>
+		<p>A <span class="keyconcept">data model</span> is a collection of high-level data description constructs that hide many low-level storage details.</p>
+		<a href="./images/Database_models_wikipedia.jpg"><img src="./images/Database_models_wikipedia.jpg" alt="Database_models_wikipedia.jpg" style="height: 40vh;"></a>
+	</section>
+	<section><h3>Hierarchical database model</h3>
+		<img src="images/hierarchical-database-model.png">
+		<p>Each child have only one parent.</p>
+	</section>
+	<section><h3>Network database model</h3>
+		<img src="images/network-database-model.png" style="height: 40vh;">
+		<p>A child can have multiple parents.</p>
+	</section>
+	<section><h3>Graph database model</h3>
+		<img src="./images/GraphDatabase_PropertyGraph copy.png" alt="GraphDatabase_PropertyGraph copy.png">
+		<p>A graph database stores nodes and relationships instead of tables, or documents.</p>
+	</section>
+	<section><h3>Relational database model</h3>
+		<img src="images/relational-database-model.png" style="height: 40vh;">
+		<p>The central construct is a relation(table), which can be thought of as a set of tuples (rows) which shares common attributes(columns) .</p>
+	</section>
+	<section><h3>Object-oriented database model</h3>
+		<img src="images/relational_vs_object_model.gif">
+		<p>Ease the modelling of complex data structures with <span class="keyconcept">many-to-many</span> relationships, by <span class="keyconcept">inheritance</span>, <span class="keyconcept">data encapsulation</span></p>
+	</section>
+	<section><h3>Document database model</h3>
+		<img src="images/document_model.webp" style="height: 40vh;">
+		<p>Document databases store data in objects that can be <span class="note">deeply nested</span> and can consist of <span class="note">arbitrary fields</span>.</p>
+	</section>
+</section>
+
+
+<section data-min="5" class="main-sesction-title"><h1>RDBMS - Basic Concepts</h1></section>
+<section class="sub-sections"><h2>Relational DB Model Overview</h2>
+	<section><h3>Definition</h3>
+		<dl class="fa">
+			<dt>A Relational Database is a collection of one or more <span class="keyconcept">tables</span>, where each table is<span class="note">a relation between rows and columns</span>.</dt>
+			<dt>A relation consists of a <span class="keyconcept">relation schema</span> and a <span class="keyconcept">relation instance</span>.</dt>
+			<dt><span class="keyconcept">Relation instance</span> - a table with rows and columns.</dt>
+			<dt><span class="keyconcept">Relation schema</span> - describes the column heads for the table.</dt>
+		</dl>
+	</section>
+	<section><h3>Key Concepts</h3>
+		<dl class="fa">
+			<dt><span class="keyconcept">Table</span> - represents a <span class="keyconcept">Relation</span>.</dt>
+				<dd><span class="keyconcept">Table</span> and <span class="keyconcept">relation</span> are synonymous in DB context.</dd>
+				<dd>A <span class="keyconcept">relation</span> is different from <span class="keyconcept">relationship between tables</span>.</dd>
+				<dd>A <span class="keyconcept">table</span> consists of <span class="keyconcept">rows</span> and <span class="keyconcept">columns</span>, like a simple spreadsheet.</dd>
+				<dd>Each <span class="keyconcept">table</span> is a set of <span>unique</span> <span class="keyconcept">rows</span>.</dd>
+			<dt><span class="keyconcept">Row</span> (Tuple, Record)</dt>
+				<dd>Represents a collection of related values (characteristic) of an entity.</dd>
+			<dt><span class="keyconcept">Column</span> (Field, Attribute )</dt>
+				<dd>One column contains data of one and the same type, as defined in schema.</dd>
+		</dl>
+	</section>
+	<section><h3>Key Concepts</h3>
+		<a href="./images/RDB_BasicConcepts.png"><img src="./images/RDB_BasicConcepts.png" alt="RDB_BasicConcepts.png"></a>
+	</section>
+	<section><h3>Tables Relationships</h3>
+		<dl class="fa">
+			<dt class="keyconcept">One to one relationship</dt>
+				<dd>Example: Customer -> Address</dd>
+			<dt class="keyconcept">One to Many/Many to One relationship</dt>
+				<dd>Example: Customer -> Orders</dd>
+			<dt class="keyconcept">Many to Many relationship</dt>
+				<dd>Examples: Orders -> Items</dd>
+			<dt class="keyconcept">Self Referencing relationship</dt>
+				<dd>Customer -> Customer (like in referral program)</dd>
+		</dl>
+		<p class="note">These concepts will be discussed further.</p>
+	</section>
+	<section><h3>ExampleDatabase</h3>
+		<img src="images/ExampleDatabase_ShowTables.png">
+	</section>
+	<section><h3>Example Table</h3>
+		<img src="images/ExampleDatabase_DescTable.png">
+	</section>
+	<section><h3>Popular Relationship Database Management System (RDBMS)</h3>
+		<dl class="fa">
+			<dt>Commercial:</dt>
+				<dd>Oracle, Microsoft SQL Server, SAP SyBase</dd>
+			<dt>Free (under GPL)</dt>
+				<dd>MySQL/MariaDB, PostgreSQL, SQLite</dd>
+		</dl>
+	</section>
+</section>
+<section class="sub-sections"><h2>RDBMS - Basic Concepts</h2>
+	<section><h3>Data Definition Language (DDl)</h3>
+		<dl class="fa">
+			<dt>DDL helps you to define the <span class="note">database structure or schema</span></dt>
+			<dt>Some common DDL Commands are</dt>
+			<dd>CREATE, ALTER, DROP, TRUNCATE, etc.</dd>
+			<dt>Changes are saved in the database immediately and permanently.</dt>
+		</dl>
+	</section>
+	<section><h3>Data Manipulation Language (DML)</h3>
+		<dl class="fa">
+			<dt>The DML is the programming language used to express operations that interrogate or update <span class="note">the data</span> in the database</dt>
+			<dt>DML commands are used to manage the data stored in the database, like</dt>
+			<dd>INSERT, UPDATE, DELETE, MERGE, CALL, etc.</dd>
 		</dl>
 	</section>
 </section>
 
 
-<section data-min="50"><h1>Prerequisites</h1></section>
-<section><h2>Prerequisites</h2>
-	<section><h3>Code Editor</h3>
+
+<section data-min="5" class="main-sesction-title"><h1>Setup MySQL Tools</h1></section>
+<section class="sub-sections"><h2>Setup MySQL</h2>
+	<section><h3>Install on Windows</h3>
 		<dl class="fa">
-			<dt>Recommended: <a href="https://code.visualstudio.com/">VSCode</a> or <a href="https://www.sublimetext.com/">SublimeText</a></dt>
-			<dd>Or any other you feel good with and can work with it without a hitch. </dd>
+			<dt><a href="https://dev.mysql.com/doc/refman/8.0/en/windows-installation.html">Installing MySQL on Microsoft Windows @https://dev.mysql.com/</a></dt>
+			<dd>Download: <a href="https://dev.mysql.com/downloads/installer/">MySQL Community Downloads</a></dd>
+			<dd>It is more flexible to choose the <span class="note">web-community</span> version that does not bundle any MySQL applications, but downloads only the MySQL products you choose to instal</dd>
+
+			<dt>For start we need only <span class="note">MySQl Server</span>, <span class="note">MySQL Workbench</span> and <span class="note">MySQL Shell</span></dt>
+			<dd>so on "Choosing a Setup Type" window select "Custom". <br>
+				<!-- <a href="./images/choosing-mysql-setup-type.png"><img src="./images/choosing-mysql-setup-type.png" alt="choosing-mysql-setup-type.png" style="height: 30vh; margin:.2em 1em"	></a> -->
+			</dd>
+			<dd>reference: <a href="https://dev.mysql.com/doc/refman/8.0/en/mysql-installer-setup.html">2.3.3.1 MySQL Installer Initial Setup</a></dd>
 		</dl>
 	</section>
-    <section><h3>Course Folders Structure && GitHub</h3>
+	<section><h3>Install on Windows - choose Setup Type</h3>
+		<a href="./images/MySQL_instal_wndows_setup_type.png"><img src="./images/MySQL_instal_wndows_setup_type.png" alt="MySQL_instal_wndows_setup_type.png"></a>
+	</section>
+	<section><h3>Install on Windows - Select Products</h3>
+		<a href="./images/MySQL_instal_wndows_minimal_products.png"><img src="./images/MySQL_instal_wndows_minimal_products.png" alt="MySQL_instal_wndows_minimal_products.png"></a>
+	</section>
+	<section><h3>Install on MacOS</h3>
 		<dl class="fa">
-			<dt>Make sure, you have next folder structure on you coputer</dt>
-			<pre><code rel="" class="bash">
-				JS-Advanced-React/
-				├── HW 		# your HW files here
-				├── labs   		# your exercises in labs here
-				└── project 		# your course project files
+			<dt><a href="https://dev.mysql.com/doc/refman/8.0/en/macos-installation.html">Installing MySQL on MacOS @https://dev.mysql.com/</a></dt>
+		</dl>
+	</section>
+	<section><h3>Install on Linux</h3>
+		<dl class="fa">
+			<dt><a href="https://dev.mysql.com/doc/refman/8.0/en/binary-installation.html">Installing MySQL on Linux @https://dev.mysql.com/</a></dt>
+			<dt>APT repos for all mysql-apt-config versions: <a href="https://repo.mysql.com/apt/ubuntu/pool/mysql-apt-config/m/mysql-apt-config/">https://repo.mysql.com/apt/ubuntu/pool/mysql-apt-config/m/mysql-apt-config/</a></dt>
+			<dt>If you have problems on old linux version, you can try installing MariaDB</dt>
+			<dd><a href="https://downloads.mariadb.org/mariadb/repositories/#mirror=mva">https://downloads.mariadb.org/mariadb/repositories</a></dd>
+			<dt>Check the installation:</dt>
+			<pre><code rel="Terminal" class="bash">
+				systemctl status mysql
+
+				# ● mariadb.service - MariaDB 10.2.38 database server
+				# 	Loaded: loaded (/lib/systemd/system/mariadb.service; enabled; vendor preset: enabled)
+				# Drop-In: /etc/systemd/system/mariadb.service.d
+				# 									└─migrated-from-my.cnf-settings.conf
+
 			</code></pre>
 		</dl>
-
+	</section>
+	<section><h3>MySQL Workbench</h3>
+		<dl class="fa">
+			<dt>MySQL Workbench is a unified visual tool for database architects, developers, and DBAs.</dt>
+			<dt>Official site: <a href="https://www.mysql.com/products/workbench/">www.mysql.com/products/workbench</a></dt>
+			<dt>If after installation of mysql server you don't have  MySQL Workbench, you can download it from: </dt>
+			<dd><a href="http://dev.mysql.com/downloads/workbench/">Download MySQL Workbench</a></dd>
+		</dl>
+    </section>
+    <section><h3>mycli (optional)</h3>
+		<dl class="fa">
+			<dt>mycli: A Terminal Client for MySQL with AutoCompletion and Syntax Highlighting</dt>
+			<dd>Official site: <a href="https://www.mycli.net/">mycli</a></dd>
+			<dt><span class="note">Requires python</span></dt>
+		</dl>
+		<a href=""><img src="https://github.com/dbcli/mycli/raw/master/screenshots/tables.png" style="height: 40vh;"></a>
+    </section>
+	<section><h3>Employees Sample Database</h3>
+		<dl class="fa">
+			<dt>The database contains about 300,000 employee records with 2.8 million salary entries.</dt>
+			<dt>The export data is 167 MB, which is not huge, but heavy enough to be usefull for testing.</dt>
+			<dt>Install: <a href="https://dev.mysql.com/doc/employee/en/employees-installation.html">Employees Sample Database</a></dt>
+		</dl>
 	</section>
 </section>
+<section class="sub-sections"><h2>Test the installations</h2>
+	<section><h3>MySQL Client</h3>
+        <pre><code rel="Terminal" class="bash" style="min-height: 90vh;">
+			### the client:
+			mysql --version
+
+			# mysql  Ver 14.14 Distrib 5.7.11, for Linux (x86_64) using  EditLine wrapper
+
+			### the server:
+			mysqld --version
+
+			# mysqld  Ver 5.7.11 for Linux on x86_64 (MySQL Community Server (GPL))
+
+
+			### the workbench
+			mysql-workbench --version
+
+			# Found /usr/lib/x86_64-linux-gnu/libproj.so.9
+			# MySQL Workbench CE (GPL) 6.3.10 CE build 12092614
+		</code></pre>
+    </section>
+	<section><h3>Add mysql path to Windows PATH env. variable</h3>
+		<dl class="fa">
+			<dt>If after the sucessfull instalation, your 'mysql' command is not recognized, then you have to add it to windows path.</dt>
+			<dt>Follow nezt instructions: <a href="https://dev.mysql.com/doc/mysql-windows-excerpt/5.7/en/mysql-installation-windows-path.html">Customizing the PATH for MySQL Tools</a></dt>
+		</dl>
+	</section>
+</section>
+<section class="sub-sections"><h2>Start/stop MySQL Server</h2>
+	<section><h3>Windows</h3>
+		<dl class="fa">
+			<dt>Open Run Window by Winkey + R</dt>
+			<dt>Type services.msc</dt>
+			<dt>Search MySQL service based on version installed.</dt>
+			<dt>Click stop, start or restart the service option.</dt>
+			<dt>Or you can start/stop MySQL from the command prompt:</dt>
+			<pre><code rel="Terminal" class="bash">
+				C:\> "C:\Program Files\MySQL\MySQL Server 8.0\bin\mysqld"
+				C:\> "C:\Program Files\MySQL\MySQL Server 8.0\bin\mysqladmin" -u root shutdown
+			</code></pre>
+			<dt>Reference: <a href="https://dev.mysql.com/doc/refman/8.0/en/windows-start-service.html">Starting MySQL as a Windows Service</a></dt>
+		</dl>
+	</section>
+	<section><h3>Linux</h3>
+		<pre><code rel="Terminal" class="bash">
+			service mysql start
+			service mysql stop
+			service mysql restart
+		</code></pre>
+		<dl class="fa">
+			<dt>Or if you have the old init.d</dt>
+		</dl>
+		<pre><code rel="Terminal" class="bash">
+			/etc/init.d/mysqld start
+			/etc/init.d/mysqld stop
+			/etc/init.d/mysqld restart
+		</code></pre>
+	</section>
+</section>
+
+<section data-min="5" class="main-sesction-title"><h1>Connect to MySQL Server</h1></section>
+<section class="sub-sections"><h2>Connect to MySQL Server</h2>
+	<section><h3>MySQL client</h3>
+		<pre><code rel="Terminal" class="bash">
+			# connect to local mysql, using the root account:
+			mysql -u root -p
+
+			# Enter password:
+			# ...
+
+			# Welcome to the MariaDB monitor.  Commands end with ; or \g.
+			# Your MariaDB connection id is 14
+			# Server version: 10.2.38-MariaDB-10.2.38+maria~xenial-log mariadb.org binary distribution
+
+			# Copyright (c) 2000, 2018, Oracle, MariaDB Corporation Ab and others.
+
+			# Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+			# MariaDB [(none)]>
+		</code></pre>
+	</section>
+	<section><h3>MySQL server - where my DB are stored?</h3>
+		<dl class="fa">
+			<dt>All MySQL databases are stored in directories inside a MySQL DATADIR directory.</dt>
+			<dt>E.g. myExampleDB’s files would be stored inside ‘$DATADIR/myExampleDB’ directory.</dt>
+			<dt>MySQl DATADIR is specified in the config file, but can be easily retrieved by: </dt>
+		</dl>
+		<pre><code rel="mysql cli" class="bash">
+			mariadb root@localhost:(none)> select @@datadir
+			+-----------------+
+			| @@datadir       |
+			|-----------------|
+			| /var/lib/mysql/ |
+			+-----------------+
+			1 row in set
+			Time: 0.002s
+
+		</code></pre>
+	</section>
+</section>
+
+
 
 <section class="disclaimer" data-background="../../../outfit/images/for_slides/the_end_on_sand.jpg">
 	 <p>These slides are based on</p>
