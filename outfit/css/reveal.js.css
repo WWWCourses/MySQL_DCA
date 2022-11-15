@@ -250,7 +250,7 @@ a.home_link{
   margin-left: .5em;
 }
 .theme_switch a{
-    opacity: 0.4;
+    opacity: 1;
     font-size: .4em;
 }
 .theme_switch a:hover{
