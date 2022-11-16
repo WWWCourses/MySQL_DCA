@@ -1,0 +1,741 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<title>DDL_and_DataTypes</title>
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+	<link rel="icon" type="image/x-icon" href="../../../outfit/images/favicons/mysql_logo.png">
+	<!-- css & themes include -->
+	<link rel="stylesheet" href="../../../lib/reveal.js/css/reveal.css">
+	<link rel="stylesheet" href="../../../outfit/css/themes/light.css" id="theme">
+	<!-- Printing and PDF exports -->
+	<script>
+		var link = document.createElement( 'link' );
+		link.rel = 'stylesheet';
+		link.type = 'text/css';
+		link.href = window.location.search.match( /print-pdf/gi ) ? '../../../lib/reveal.js/css/print/pdf.css' : '../../../lib/reveal.js/css/print/paper.css';
+		document.getElementsByTagName( 'head' )[0].appendChild( link );
+	</script>
+	<!--[if lt IE 9]>
+	<script src="lib/js/html5shiv.js"></script>
+	<![endif]-->
+	<!-- custom -->
+	<link rel="stylesheet" href="../../../outfit/css/reveal.js.css">
+	<base target="_blank">
+</head>
+<body>
+	<div class="reveal default center" data-transition-speed="default" data-background-transition="default">
+		<div class="top_links">
+			<a class="home_link" href="../../../index.html#DDL_and_DataTypes" target="_top"><i class="fa fa-home"></i></a>
+			<span class="help_link"><i class="fa fa-question"></i></span>
+			<div class="help_text">
+				<div class="note">Keyboard shortcuts:</div>
+				<div><span>N/Спейс</span><span>Next Slide</span></div>
+				<div><span>P</span><span>Previous Slide</span></div>
+				<div><span>O</span><span>Slides Overview</span></div>
+				<div><span>ctrl+left click</span><span>Zoom Element</span></div>
+				<div class="print-howto"><br>If you want print version => add '<code>?print-pdf</code>' <br> at the end of slides URL (remove '#' fragment) and then print. <br>
+				Like: https://wwwcourses.github.io/...CourseIntro.html?print-pdf </div>
+			</div>
+		</div>
+		<div class="footer theme_switch">
+			<a href="#" onclick="document.getElementById('theme').setAttribute('href','../../../outfit/css/themes/dark.css'); return false;">Dark</a>
+			<a href="#" onclick="document.getElementById('theme').setAttribute('href','../../../outfit/css/themes/light.css'); return false;">Light</a>
+			<!-- <a href="#" onclick="document.getElementById('theme').setAttribute('href','../../../outfit/css/themes/projector.css'); return false;">Projector</a> -->
+		</div>
+		<div class="slides">
+<!--
+########################################################
+##################### SLIDES START #####################
+########################################################
+-->
+<section><h1>DDL. MySQL Data Types.</h1></section>
+<section data-transition="zoom">
+	<section>
+		<div class="copyright">
+			<div class="note">
+				<p>Created for</p>
+			</div>
+			<div class="company">
+				<a href="https://progressbg.net/javascript-advanced-with-reactjs/">
+				<img src="../../../outfit/images/logos/ProgressBG_logo_529_127.png" alt="ProgressBG_logo">
+				</a>
+			</div>
+		</div>
+	</section>
+	<section class="copyright" data-transition="zoom" style="margin-top: -2em;">
+		<div class="note">
+			<p>Created by</p>
+		</div>
+		<div class="company">
+		   <div class="LI-profile-badge"  data-version="v1" data-size="large" data-locale="en_US" data-type="vertical" data-theme="dark" data-vanity="ivapopova"><a class="LI-simple-link" href="https://bg.linkedin.com/in/ivapopova?trk=profile-badge">Iva E. Popova</a></div>
+		</div>
+		<!-- <div class="author">
+			<a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-sa/4.0/88x31.png"></a>
+		</div> -->
+	</section>
+</section>
+
+
+<section data-min="5"><h1>Introduction to SQL</h1></section>
+<section id="introductionToSql"><h2>Introduction to SQL</h2>
+	<section><h3>What is SQL?</h3>
+	<dl class="fa">
+		<dt><abbr>SQL</abbr><dfn id="SQL"><span>Structured</span><span>Query</span><span>Language</span></dfn></dt>
+		<dt>The standard language for relational database management systems.</dt>
+		<dt>Not a procedural language(C, Java etc.).</dt>
+		<dt>A declarative language!</dt>
+			<dd>Tell with SQL <b>what</b> you want instead of telling the system <b>how</b> to get it.</dd>
+	</dl>
+	</section>
+	<section><h3>SQL statements and queries</h3>
+	<dl class="fa">
+		<dt>SQL provides a set of commands (statements) you can use to <span class="keyconcept">query</span> or <span class="keyconcept">manipulate</span> the DB.</dt>
+		<dt class="note">SQL is case insensitive.</dt>
+		<dd><code>show databases;</code> and <code>SHOW DATABASES;</code> are the same.</dd>
+		<dt>Database and table names are not case sensitive in Windows, but are case sensitive in most varieties of Unix or Linux.</dt>
+		<dd><code>desc mysql.user;</code> will work but <code>desc mysql.USER;</code> will return an error ((1146, "Table 'mysql.USER' doesn't exist")) on Linux/MacOS</dd>
+		<dt>Most RDBMS require a semicolon (';') to separate each SQL statement.</dt>
+		<dd class="note">As best practice, always put ';' after each SQL statement.</dd>
+	</dl>
+	</section>
+	<section><h3>Example SQL statements</h3>
+		<p><span class="keyconcept">SELECT</span>, <span class="keyconcept">UPDATE</span>, <span class="keyconcept">DELETE</span></p>
+		<p><span class="keyconcept">INSERT INTO</span>, <span class="keyconcept">CREATE DATABASE</span>, <span class="keyconcept">ALTER DATABASE</span></p>
+		<p><span class="keyconcept">CREATE TABLE</span>, <span class="keyconcept">ALTER TABLE</span>, <span class="keyconcept">DROP TABLE</span></p>
+		<p><span class="keyconcept">CREATE INDEX</span>, <span class="keyconcept">DROP INDEX</span></p>
+	</section>
+	<section><h3>SQL statements categories</h3>
+		<dl class="fa">
+			<dt>SQL statements are mainly categorized into next five categories:</dt>
+			<dd><span class="note">DDL</span> - Data Definition Language</dd>
+			<dd><span class="note">DQL</span> - Data Query Language</dd>
+			<dd><span class="note">DML</span> - Data Manipulation Language</dd>
+			<dd><span class="note">DCL</span> - Data Control Language</dd>
+			<dd><span class="note">TCL</span> - Transaction Control Language</dd>
+		</dl>
+	</section>
+	<section><h3>SQL statements categories - diagram</h3>
+		<a href="./images/SQL_commands_categories.png"><img src="./images/SQL_commands_categories_2.png" alt="SQL_commands_categories_2.png" style="height:70vh"></a>
+	</section>
+</section>
+
+<section data-min="10"><h1>Data Definition Language (DDL)</h1></section>
+<section id="DDL_Overview"><h2>Data Definition Language (DDL)</h2>
+	<section><h3>Overview</h3>
+		<dl class="fa">
+			<dt>DDL is a set of SQL commands used to <code>create</code>, <code>modify</code>, and <code>delete</code> <span class="note">database logical objects</span>, but not data.</dt>
+			<dt>Logical structure model of RDBMS</dt>
+			<a href="./images/RDBMS_logical_structure_model.png"><img src="./images/RDBMS_logical_structure_model.png" alt="RDBMS_logical_structure_model.png"></a>
+		</dl>
+	</section>
+</section>
+
+<section data-min="20"><h1>Manage databases</h1></section>
+<section id="manageDatabases"><h2>Manage databases</h2>
+	<section><h3>Show databases</h3>
+		<dl class="fa">
+			<dt>Show all databases</dt>
+			<dd>note, that only those databases for which the user have some kind of privilege (or if the user have the global SHOW DATABASES privilege) will be shown</dd>
+			<pre><code rel="MySQL" class="sql">
+				SHOW DATABASES;
+
+				+--------------------+
+				| Database           |
+				+--------------------+
+				| information_schema |
+				| mysql              |
+				| performance_schema |
+				| sys                |
+				+--------------------+
+			</code></pre>
+		</dl>
+	</section>
+	<section><h3>Create databases</h3>
+		<dl class="fa">
+			<dt>To create a database:</dt>
+			<pre><code rel="MySQL" class="sql">
+				CREATE DATABASE test;
+			</code></pre>
+			<dd>Note, that if databases exists, an error will be thrown: <span class="note">(1007, "Can't create database 'test'; database exists")</span>. To escape such error we can use:</dd>
+			<pre><code rel="MySQL" class="sql">
+				CREATE DATABASE IF NOT EXISTS test;
+			</code></pre>
+		</dl>
+	</section>
+	<section><h3>Delete database</h3>
+		<dl class="fa">
+			<dt>To delete a database:</dt>
+			<pre><code rel="MySQL" class="sql">
+				DROP DATABASE tmp;
+			</code></pre>
+			<dd>Note, that if databases does not exists, an error will be thrown: <span class="note">(1008, "Can't drop database 'tmp'; database doesn't exist")
+			</span>. To escape such error we can use:</dd>
+			<pre><code rel="MySQL" class="sql">
+				DROP DATABASE IF EXISTS tmp;
+			</code></pre>
+		</dl>
+	</section>
+	<section><h3>Use Database</h3>
+		<dl class="fa">
+			<dt>To select a database to work with, we must use the USE statement</dt>
+		</dl>
+		<pre><code rel="sql" class="sql">
+			USE employees;
+		</code></pre>
+	</section>
+	<section><h3>Import database (Setup Test Database)</h3>
+		<dl class="fa">
+			<dt>Download the test db and load it </dt>
+			<dd><a href="https://github.com/datacharmer/test_db/">Employees Sample Database</a></dd>
+			<dt>Install</dt>
+			<dd>if you have git installed in your machine, just: </dd>
+			<pre><code rel="Terminal" class="bash" >
+				git clone https://github.com/datacharmer/test_db/
+
+				cd test.db
+
+				mysql -u root -p < employees.sql
+
+			</code></pre>
+			<dd>Else, follow instructions:  <a href="https://dev.mysql.com/doc/employee/en/employees-installation.html">Installation of Employees Sample Database @dev.mysql</a></dd>
+		</dl>
+
+	</section>
+	<section><h3>Export (dump) DB to external sql file:</h3>
+		<pre><code rel="Syntax" class="bash">
+			mysqldump -u username -p databasename > filename.sql
+		</code></pre>
+		<dl class="fa">
+			<dt>Reference: <a href="https://dev.mysql.com/doc/refman/8.0/en/mysqldump.html">mysqldump - A Database Backup Program</a></dt>
+		</dl>
+	</section>
+</section>
+
+
+<section><h1>Manage Tables</h1></section>
+<section class="sub-sections"><h2>MySQL Storage Engines</h2>
+	<section><h3 style="margin-top:1em;">Overview</h3>
+		<dl class="fa">
+			<dt>Storage engines are MySQL components that handle the SQL operations for different table types.</dt>
+			<dt>InnoDB is the default and most general-purpose storage engine, and Oracle recommends using it for tables except for specialized use cases.</dt>
+			<dt class="note">In MySQL 8.0 the The CREATE TABLE statement created InnoDB tables by default.</dt>
+			<dt>Reference: <a href="https://dev.mysql.com/doc/refman/8.0/en/storage-engines.html">storage-engines</a></dt>
+		</dl>
+		<pre style="margin-left:0em"><code rel="mysql" class="sql">
+			SHOW ENGINES
+		</code></pre>
+		<section data-markdown style="font-size: .7em;margin-left: -7em;">
+			| Engine             | Support   | Comment                                                                          | Transactions   | XA   | Savepoints   |
+			|--------------------|-----------|----------------------------------------------------------------------------------|----------------|------|--------------|
+			| CSV                | YES       | Stores tables as CSV files                                                       | NO             | NO   | NO           |
+			| MRG_MyISAM         | YES       | Collection of identical MyISAM tables                                            | NO             | NO   | NO           |
+			| SEQUENCE           | YES       | Generated tables filled with sequential values                                   | YES            | NO   | YES          |
+			| **MyISAM**             | YES       | Non-transactional engine with good performance and small data footprint          | NO             | NO   | NO           |
+			| MEMORY             | YES       | Hash based, stored in memory, useful for temporary tables                        | NO             | NO   | NO           |
+			| PERFORMANCE_SCHEMA | YES       | Performance Schema                                                               | NO             | NO   | NO           |
+			| Aria               | YES       | Crash-safe tables with MyISAM heritage                                           | NO             | NO   | NO           |
+			| **InnoDB**             | DEFAULT   | Supports transactions, row-level locking, foreign keys and encryption for tables | YES            | YES  | YES          |
+		</section>
+	</section>
+	<section><h3>What is a Transaction?</h3>
+		<dl class="fa">
+			<dt>A transaction is a logical unit of work that contains one or more SQL statements.</dt>
+			<dt>A transaction is an atomic unit.</dt>
+			<dt>The effects of all the SQL statements in a transaction can be <span class="note">either all committed</span> (applied to the database) <span class="note">or all rolled back</span> (undone from the database).</dt>
+			<dt>Reference: <a href="https://docs.oracle.com/cd/B19306_01/server.102/b14220/transact.htm#i1666">Introduction to Transactions</a></dt>
+		</dl>
+	</section>
+</section>
+<section id="createTable"><h2>CREATE TABLE</h2>
+    <section><h3>Syntax and Example</h3>
+		<dl class="fa">
+			<dt>Minimal syntax:</dt>
+			<pre><code rel="Syntax" class="sql">
+				CREATE TABLE table_name(
+					column_name1 data_type,
+					column_name2 data_type,
+					....
+				);
+			</code></pre>
+			<dt>Identifiers (i.e. tables, columns and other objects names) which contains special characters or is a <a href="https://dev.mysql.com/doc/refman/5.6/en/keywords.html">reserved words</a> must be quoted with <a href="https://superuser.com/a/254077">backtick</a> (`)</dt>
+			<dd>if identifier contains only next symbols: <code>[0-9,a-z,A-Z$_] (basic Latin letters, digits 0-9, dollar, underscore)</code> then we are not obliged to quote it.</dd>
+
+			<pre><code rel="MySQL" class="sql">
+				CREATE TABLE artist (
+					artist_id SMALLINT(5) NOT NULL DEFAULT 0,
+					fname VARCHAR(20) DEFAULT NULL,
+					lname VARCHAR(20) NOT NULL,
+					PRIMARY KEY  (artist_id)
+				);
+
+				-- Query OK, 0 rows affected
+			</code></pre>
+			<dt>Reference: <a href="https://dev.mysql.com/doc/refman/8.0/en/create-table.html">CREATE TABLE Statement</a></dt>
+		</dl>
+    </section>
+    <section>
+		<dl class="fa">
+			<dt>If table exists an error will be thrown!</dt>
+			<pre><code rel="MySQL" class="sql">
+				CREATE TABLE artist (
+					artist_id SMALLINT(5) NOT NULL DEFAULT 0,
+					fname VARCHAR(20) DEFAULT NULL,
+					lname VARCHAR(20) NOT NULL,
+					PRIMARY KEY  (artist_id)
+				);
+
+				-- (1050, "Table 'artist' already exists")
+			</code></pre>
+			<dt>To prevent this error we can use <code>CREATE TABLE IF NOT EXISTS <i>tbl_name</i></code></dt>
+			<pre><code rel="MySQL" class="sql">
+				CREATE TABLE IF NOT EXISTS artist (
+					artist_id SMALLINT(5) NOT NULL DEFAULT 0,
+					fname VARCHAR(20) DEFAULT NULL,
+					lname VARCHAR(20) NOT NULL,
+					PRIMARY KEY  (artist_id)
+				);
+
+				-- Query OK, 0 rows affected
+			</code></pre>
+		</dl>
+
+    </section>
+    <section><h3>SHOW CREATE TABLE</h3>
+		<dl class="fa">
+			<dt>This allows us to see the create statement that MySQL engine had used</dt>
+			<dt>It shows even the default options, which we did not state explicitly.</dt>
+		</dl>
+        <pre><code rel="MySQL" class="bash">
+			SHOW CREATE TABLE artist;
+
+			# to display wide results in vertical form we can use '\G' modifier instead of ';'
+			SHOW CREATE TABLE artist\G
+        </code></pre>
+        <p>Results in:</p>
+        <pre><code>
+			***************************[ 1. row ]***************************
+			Table        | artist
+			Create Table | CREATE TABLE `artist` (
+			`artist_id` smallint(5) NOT NULL DEFAULT '0',
+			`fname` varchar(20) DEFAULT NULL,
+			`lname` varchar(20) NOT NULL,
+			PRIMARY KEY (`artist_id`)
+			) ENGINE=InnoDB DEFAULT CHARSET=latin1
+        </code></pre>
+    </section>
+	<section><h3>DESC table</h3>
+		<dl class="fa">
+			<dt>To show the structure of a table: </dt>
+		</dl>
+			<pre><code rel="MySQL" class="sql">
+				DESC artist;
+			</code></pre>
+			<p>Results in:</p>
+			<pre><code>
+				+-----------+-------------+--------+-------+-----------+---------+
+				| Field     | Type        | Null   | Key   |   Default | Extra   |
+				|-----------+-------------+--------+-------+-----------+---------|
+				| artist_id | smallint(5) | NO     | PRI   |         0 |         |
+				| fname     | varchar(20) | YES    |       |    &lt;null&gt; |         |
+				| lname     | varchar(20) | NO     |       |    &lt;null&gt; |         |
+				+-----------+-------------+--------+-------+-----------+---------+
+			</code></pre>
+	</section>
+	<section>
+		<dl class="fa">
+			<dt>Remember, that we can list all tables in a DB with:</dt>
+		</dl>
+		<pre><code rel="MySQL" class="sql">
+			SHOW TABLES;
+		</code></pre>
+		<p>Results in:</p>
+		<pre><code>
+			+----------------------+
+			| Tables_in_music_db   |
+			|----------------------|
+			| artist               |
+			+----------------------+
+		</code></pre>
+	</section>
+</section>
+<section id="dropTable"><h2>DROP TABLE</h2>
+	<section><h3>Syntax</h3>
+		<dl class="fa">
+			<dt>To delete a table:</dt>
+			<pre><code rel="MySQL" class="sql">
+				DROP TABLE artist;
+			</code></pre>
+			<dt>If table do not exists, an error is thrown: <code>ERROR 1051 (42S02): Unknown table 'music_db.artist'</code>, but we can use:</dt>
+			<pre><code rel="MySQL" class="sql">
+				DROP TABLE IF EXISTS artist;
+			</code></pre>
+		</dl>
+	</section>
+</section>
+<section id="alterTable"><h2>ALTER TABLE</h2>
+    <section><h3>Add column</h3>
+        <pre><code rel="Syntax" class="sql">
+			ALTER TABLE table_name
+				ADD new_column_name column_definition
+				[ FIRST | AFTER column_name ]; # optional
+        </code></pre>
+        <pre><code rel="SQL" class="sql">
+			ALTER TABLE artist
+				ADD birth_date TINYINT
+				AFTER lname;
+        </code></pre>
+    </section>
+    <section><h3>Remove column</h3>
+        <pre><code rel="SQL" class="sql">
+			ALTER TABLE artist DROP birth_date;
+        </code></pre>
+    </section>
+</section>
+<section id="truncateTable"><h2>TRUNCATE TABLE</h2>
+	<section><h3></h3>
+		<dl class="fa">
+			<dt>The TRUNCATE TABLE command deletes the data inside a table, but not the table itself.</dt>
+			<dt>Let's insert some data into artist, in order to see how truncate works:</dt>
+			<pre><code rel="MySQL" class="sql">
+				INSERT INTO artist (fname,lname) VALUES ('Robert', 'Smith');
+			</code></pre>
+			<dt>Let's check:</dt>
+			<pre><code rel="MySQL" class="sql">
+				SELECT * FROM artist;
+
+				+-----------+--------+-------+
+				| artist_id | fname  | lname |
+				+-----------+--------+-------+
+				| 0         | Robert | Smith |
+				+-----------+--------+-------+
+				dt
+			</code></pre>
+			<dt>Now, let delete all data:</dt>
+			<pre><code rel="MySQL" class="sql">
+				TRUNCATE artist;
+			</code></pre>
+			<dt>Let's check now:</dt>
+			<pre><code rel="MySQL" class="sql">
+				+-----------+-------+-------+
+				| artist_id | fname | lname |
+				+-----------+-------+-------+
+				+-----------+-------+-------+
+				0 rows in set
+			</code></pre>
+		</dl>
+	</section>
+</section>
+<section id="renameTable"><h2>RENAME TABLE</h2>
+	<section>
+		<dl class="fa">
+			<dt>RENAME TABLE renames one or more tables</dt>
+			<pre><code rel="MySQL" class="sql">
+				RENAME TABLE old_table TO new_table;
+			</code></pre>
+			<dt>Note, that we can rename a table with <code>ALTER TABLE</code>, as well:</dt>
+			<pre><code rel="MySQL" class="sql">
+				ALTER TABLE old_table RENAME new_table;
+			</code></pre>
+			<dt>Reference: <a href="https://dev.mysql.com/doc/refman/8.0/en/rename-table.html">RENAME TABLE @dev.mysql</a></dt>
+		</dl>
+	</section>
+</section>
+
+<section data-min="1" class="main-sesction-title"><h1>MySQL Data Types</h1></section>
+<section class="sub-sections"><h2>MySQL Data Types</h2>
+	<section><h3>Overview</h3>
+		<dl class="fa">
+			<dt>MySQL supports many SQL data types in several categories:</dt>
+			<dd>numeric types</dd>
+			<dd>string (character and byte) types</dd>
+			<dd>date and time types</dd>
+			<dd>spatial types</dd>
+			<dd>JSON data type</dd>
+			<dt>References:</dt>
+			<dd><a href="https://www.w3schools.com/mysql/mysql_datatypes.asp">MySQL Data Types @w3schools</a></dd>
+			<dd><a href="https://dev.mysql.com/doc/refman/8.0/en/data-types.html">MySQL Data Types @dev.mysql</a></dd>
+		</dl>
+	</section>
+</section>
+
+<section data-min="5" class="main-sesction-title"><h1>Numeric Data Types</h1></section>
+<section class="sub-sections"><h2>Numeric Data Types</h2>
+	<section><h3>Numeric Data Types - Overview</h3>
+		<dl class="fa">
+			<dt><a href="https://dev.mysql.com/doc/refman/8.0/en/numeric-types.html">Numeric Data Types</a></dt>
+			<dt><a href="https://dev.mysql.com/doc/refman/8.0/en/storage-requirements.html#data-types-storage-reqs-numeric">Numeric Type Storage Requirements
+			</a></dt>
+		</dl>
+	</section>
+	<section><h3>Integer Types - Overview</h3>
+		<dl class="fa">
+			<dt>SQL standard integer types:</dt>
+				<dd>INTEGER (or INT)</dd>
+				<dd>SMALLINT</dd>
+			<dt>MySQL extension:</dt>
+				<dd>TINYINT</dd>
+				<dd>MEDIUMINT</dd>
+				<dd>BIGINT</dd>
+		</dl>
+	</section>
+	<section><h3>Integer Types - Comparison Table</h3>
+		<img src="images/IntegerDataTypes.png">
+	</section>
+	<section><h3>Integer Types - Examples</h3>
+		<p>Create datatypes table</p>
+		<pre><code rel="mysql" class="sql">
+			CREATE TABLE IF NOT EXISTS integer_datatypes(
+				id int(10) unsigned not null auto_increment,
+				tinyint_data TINYINT(4) default null,
+				smallint_data SMALLINT(6) default null,
+				mediumint_data MEDIUMINT(9) default null,
+				int_data INT(11) default null,
+				bigint_data BIGINT(20) default null,
+				PRIMARY KEY (id)
+			);
+		</code></pre>
+		<p>And now insnert some numeric data</p>
+		<pre><code rel="MySQL" class="sql">
+			INSERT INTO integer_datatypes (tinyint_data,smallint_data,mediumint_data,int_data,bigint_data )
+			VALUES (100, 20000, 3000000, 100000000, 10000000000000000 );
+		</code></pre>
+	</section>
+	<section><h3>Fixed-Point Types</h3>
+		<dl class="fa">
+			<dt>DECIMAL</dt>
+				<dd>Standard SQL requires that DECIMAL(X,Y) be able to store any value with X digits and Y decimals.</dd>
+				<pre><code rel="mysql" class="sql">
+					salary DECIMAL(6,2)
+				</code></pre>
+				<dd>Values that can be stored in the salary column range from -9999.99 to 9999.99.</dd>
+			<dt>Reference: <a href="https://dev.mysql.com/doc/refman/8.0/en/fixed-point-types.html">Fixed-Point Types</a></dt>
+			<dt>Example</dt>
+			<pre><code rel="mysql" class="sql">
+				ALTER TABLE integer_datatypes ADD decimal_data DECIMAL(6,2)
+
+				INSERT INTO integer_datatypes (decimal_data) VALUES (10000.99)
+				# (1264, "Out of range value for column 'decimal_data' at row 1")
+
+				INSERT INTO integer_datatypes (decimal_data) VALUES (9999.99)
+				Query OK, 1 row affected
+			</code></pre>
+		</dl>
+
+	</section>
+	<section><h3>Floating-Point Types</h3>
+		<a href="http://dev.mysql.com/doc/refman/8.0/en/floating-point-types.html">Floating-Point Types</a>
+	</section>
+	<section><h3>Numeric Type Attributes</h3>
+		<dl class="fa">
+			<dt><span class="note">(X)</span> - an optional extension in parentheses following the base keyword for the type, which <span class="note">specifies the display width</span> of integer data types.</dt>
+			<dt><span class="note">ZEROFILL</span> - when used in conjunction with the optional (nonstandard) attribute ZEROFILL, the default padding of spaces is replaced with zeros. For example, for a column declared as <code>INT(4) ZEROFILL</code>, a value of 3 is retrieved as 0003.</dt>
+		</dl>
+	</section>
+</section>
+
+<section data-min="10" class="main-sesction-title"><h1>String Data Types</h1></section>
+<section class="sub-sections"><h2>String Data Types</h2>
+	<section><h3>The CHAR Data Type</h3>
+		<dl class="fa">
+			<dt><span class="code">CHAR(M)</span></dt>
+				<dd>Can store <span class="note">fixed</span> length strings.</dd>
+				<dd>The length is specified by M (defaults to 1).</dd>
+				<dd>The length can be any value from <span class="note">0</span> to <span class="note">255</span>.</dd>
+				<dd>If a value entered is with length < M, then<br>the string is <span class="note">right</span> padded with spaces.</dd>
+			<dt>Examples:</dt>
+				<pre><code rel="MySQL" class="sql">
+					CREATE TABLE user(
+						first_name VARCHAR(4),
+					);
+				</code></pre>
+				<dd>Defines that <span class="code">first_name</span> column will contains 4 character strings at max.</dd>
+		</dl>
+	</section>
+	<section><h3>The VARCHAR Data Type</h3>
+		<dl class="fa">
+			<dt><span class="code">VARCHAR(M)</span></dt>
+				<dd>Can store <span class="note">variable</span> length strings.</dd>
+				<dd>The length is specified by M - <span class="note">cannot by empty</span>!</dd>
+				<dd>The length can be any value from <span class="note">0</span> to <span class="note">65,535</span>.</dd>
+				<dd>VARCHAR values are stored as a 1-byte or 2-byte length <span class="note">prefix</span> plus data. The length prefix indicates the number of bytes in the value. A column uses one length byte if values require no more than 255 bytes, two length bytes if values may require more than 255 bytes.</dd>
+			<dt>Examples:</dt>
+				<pre><code rel="MySQL" class="sql">
+					CREATE TABLE mybook(
+						short_notes VARCHAR(50000),
+					);
+				</code></pre>
+				<dd>Defines that <span class="code">short_notes</span> column will contains 50000 character strings.</dd>
+				<dd>The real size taken on disk will be 50000+2 bytes. Note, that this is not efective!</dd>
+		</dl>
+	</section>
+	<section><h3>CHAR<->VARCHAR differences</h3>
+		<img src="images/CHAR_VARCHAR_diff.png">
+	</section>
+	<section><h3>BLOB and TEXT Data Types</h3>
+		<dl class="fa">
+			<dt><abbr>BLOB</abbr><dfn><span>Binary</span> <span>Large</span> <span>O</span><span>Bject</span></dfn></dt>
+				<dd>Stores large amounts of binary data, such as images, PDF or other types of files.</dd>
+				<dd>BLOB values are treated as binary strings - they have no character set!</dd>
+			<dt><span class="code">TEXT</span></dt>
+				<dd>TEXT values are treated as character strings - they have a character set!</dd>
+			<dt>Reference: <a href="https://dev.mysql.com/doc/refman/8.0/en/blob.html">The BLOB and TEXT Types</a></dt>
+		</dl>
+	</section>
+	<section><h3>ENUM</h3>
+		<dl class="fa">
+			<dt><span class="code">ENUM</span> (from ENUMeration)</dt>
+			<dt>Defines a <span class="note">list</span> of predefined values. Like: ('yes', 'no')</dt>
+			<dt>The value entered must be selected from that list (or it can be NULL)</dt>
+			<dt>The elements listed in the column specification are assigned index numbers, beginning with <span class="note">1</span></dt>
+			<dt>Pros:</dt>
+				<dd>Compact data storage in situations where a column has a limited set of possible values.</dd>
+				<dd>The strings you specify as input values are automatically encoded as numbers</dd>
+			<dt>Reference: <a href="https://dev.mysql.com/doc/refman/8.0/en/enum.html">ENUM</a></dt>
+		</dl>
+		<p>Example</p>
+			<pre><code rel="MySQL" class="sql">
+				CREATE TABLE user(
+					name VARCHAR(15),
+					smoker ENUM('yes','no')
+				);
+			</code></pre>
+	</section>
+</section>
+
+<section class="main-sesction-title"><h1>Date and Time Types</h1></section>
+<section class="sub-sections"><h2>Date and Time Types</h2>
+	<section><h3>The DATE Data Type</h3>
+		<dl class="fa">
+			<dt>A date in <span class="code">YYYY-MM-DD</span> format</dt>
+			<dt>Values range: between <span class="code">1000-01-01</span> and <span class="code">9999-12-31</span>.</dt>
+			<dt>A date can be entered in several formats.</dt>
+				<dd><code>'YYYY-MM-DD'</code> or <code>'YY-MM-DD'</code>, like '2016-03-28' or '16-03-28'</dd>
+			<dt>Any punctuation character may be used as the delimiter between date parts.</dt>
+				<dd>'2016/03/28' or '16/03/28'</dd>
+		</dl>
+	</section>
+	<section><h3>The DATETIME Date Type</h3>
+		<dl class="fa">
+			<dt>A date and time in <span class="code">YYYY-MM-DD HH:MM:SS</span> format</dt>
+			<dt>Values range: between <span class="code">1000-01-01 00:00:00</span> and <span class="code">9999-12-31 23:59:59</span>.</dt>
+			<dt>A DATETIME can be entered in several formats.</dt>
+				<dd><code>'YYYY-MM-DD HH:MM:SS'</code> or <code>'YY-MM-DD HH:MM:SS'</code>, like '2016-03-28 09:54:10' or '16-03-28 09:54:10'</dd>
+			<dt>Any punctuation character may be used as the delimiter between date parts.</dt>
+				<dd>'2016/03/28 09.54.10' or '16/03/28 09.54.10'</dd>
+			<dt>The date and time parts can be separated by T rather than a space.</dt>
+				<dd>'2016-03-28 09:54:10' and '2016-03-28T09:54:10' are equivalent.</dd>
+		</dl>
+	</section>
+	<section><h3>The TIMESTAMP Date Type</h3>
+		<dl class="fa">
+			<dt>A date and time in <span class="code">YYYY-MM-DD HH:MM:SS</span> format</dt>
+			<dt>Values range: between <span class="code">1970-01-01 00:00:01</span> UTC and <span class="code">2038-01-19 03:14:07</span> UTC.</dt>
+			<dt>A TIMESTAMP value can be inserted in MYSQL the same way as a DATETIME value.</dt>
+			<dt>MySQL converts TIMESTAMP values from the current time zone to UTC for storage, and back from UTC to the current time zone for retrieval</dt>
+				<dd class="note">This behavior doesn’t occur for DATETIME stored values.</dd>
+				<dd>By default, the current time zone for each connection is the <span class="note">server</span> time.</dd>
+
+			<dt><b>When to use <code>DATETIME</code></b>:</dt>
+			<dd>if you want to serve your date and time data the same way regardless of timezones</dd>
+			<dt><b>When to use <code>TIMESTAMP</code></b>:</dt>
+			<dd>when you want to serve the data on a per-timezone basis</dd>
+		</dl>
+	</section>
+	<section><h3>The TIME Date Type</h3>
+		<dl class="fa">
+			<dt>A time in <span class="code">HH:MM:SS</span> format</dt>
+			<dt>Values range: between <span class="code">-838:59:59</span> UTC and <span class="code">838:59:59</span> UTC.</dt>
+			<dt>Can represent a time, or time interval.</dt>
+			<dt>Can be inserted As a string in 'D HH:MM:SS' format. You can also use one of the following “relaxed” syntax: 'HH:MM:SS', 'HH:MM', 'D HH:MM', 'D HH', or 'SS'. Here D represents days and can have a value from 0 to 34.</dt>
+		</dl>
+	</section>
+	<section><h3>Reference</h3>
+		<dl class="fa">
+			<dt><a href="https://dev.mysql.com/doc/refman/8.0/en/date-and-time-types.html">Date and Time Data Types</a></dt>
+		</dl>
+	</section>
+</section>
+
+<section data-min="1" id='hw'><h1>Exercises and HW</h1></section>
+<section><h2>Task1: users table</h2>
+	<section><h3>Description</h3>
+		<dl class="fa">
+			<dt>Create a database called 'test'</dt>
+			<dt>In 'test' database, create table 'users' with next fields:</dt>
+			<dd>fname</dd>
+			<dd>lname</dd>
+			<dd>birth_year</dd>
+			<dd>birth_date</dd>
+			<dd>salary</dd>
+		</dl>
+  	</section>
+  	<section><h3>How to share?</h3>
+		<dl class="fa">
+			<dt>Using: <a href="http://sqlfiddle.com/">SQL Fiddle
+			</a> - A tool for easy online testing and sharing of database problems and their solutions</dt>
+			<dt>Or by <a href="https://github.com/">GitHub</a> - where people build software</dt>
+		</dl>
+	</section>
+</section>
+
+
+<section class="disclaimer" data-background="../../../outfit/images/for_slides/the_end_on_sand.jpg">
+	 <p>These slides are based on</p>
+	 <p>customised version of </p>
+	 <p><a href="http://hakim.se/">Hakimel</a>'s <a href="http://lab.hakim.se/reveal-js">reveal.js</a></p>
+	 <p>framework</p>
+</section>
+<!--
+########################################################
+##################### SLIDES END   #####################
+########################################################
+-->
+		</div>
+	</div>
+	<!-- Custom processing -->
+	<script src="../../../outfit/js/slides.js"></script>
+	<!-- external scripts -->
+	<script src="../../../lib/reveal.js/lib/js/head.min.js"></script>
+	<script src="../../../lib/reveal.js/js/reveal.js"></script>
+	<!-- init reveal -->
+	<script>
+		// Full list of configuration options available at:
+		// https://github.com/hakimel/reveal.js#configuration
+		var highlightjsTabSize = '  ';
+		Reveal.initialize({
+			controls: true,
+			progress: true,
+			slideNumber: 'c/t',
+			keyboard: true,
+			history: true,
+			center: true,
+			width: '90%',
+			height: '100%',
+			// width:1920,
+			// height:1080,
+			// slide transition
+			transition: 'concave', // none/fade/slide/convex/concave/zoom
+			// Factor of the display size that should remain empty around the content
+			margin: 0.1,
+			// shift+maous click to zoom in/out element
+			zoomKey: 'ctrl',
+			// theme: Reveal.getQueryHash().theme, // available themes are in /css/theme
+			// transition: Reveal.getQueryHash().transition || 'default'
+			// Optional reveal.js plugins
+			dependencies: [
+				{ src: '../../../lib/reveal.js/lib/js/classList.js', condition: function() { return !document.body.classList; } },
+				{ src: '../../../lib/reveal.js/plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+				{ src: '../../../lib/reveal.js/plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+				{ src: '../../../lib/reveal.js/plugin/highlight/highlight.js', async: true, callback: function() { hljs.configure({tabReplace: highlightjsTabSize}); hljs.initHighlightingOnLoad(); } },
+				{ src: '../../../lib/reveal.js/plugin/zoom-js/zoom.js', async: true },
+				{ src: '../../../lib/reveal.js/plugin/notes/notes.js', async: true }
+			]
+		});
+	</script>
+	<!-- linkedin badge -->
+
+</body>
+</html>
