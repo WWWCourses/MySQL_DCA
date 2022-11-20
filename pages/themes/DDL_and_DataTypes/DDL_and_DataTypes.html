@@ -481,59 +481,108 @@
 				<dd>BIGINT</dd>
 		</dl>
 	</section>
-	<section><h3>Integer Types - Comparison Table</h3>
+	<section><h3>MySQL Integer Types - Comparison Table</h3>
 		<img src="images/IntegerDataTypes.png">
 	</section>
 	<section><h3>Integer Types - Examples</h3>
 		<p>Create datatypes table</p>
 		<pre><code rel="mysql" class="sql">
-			CREATE TABLE IF NOT EXISTS integer_datatypes(
-				id int(10) unsigned not null auto_increment,
-				tinyint_data TINYINT(4) default null,
-				smallint_data SMALLINT(6) default null,
-				mediumint_data MEDIUMINT(9) default null,
-				int_data INT(11) default null,
-				bigint_data BIGINT(20) default null,
+			CREATE TABLE IF NOT EXISTS datatypes_demo(
+				id INT unsigned not null auto_increment,
+				tinyint_data TINYINT default null,
+				smallint_data SMALLINT default null,
+				mediumint_data MEDIUMINT default null,
+				int_data INT default null,
+				bigint_data BIGINT default null,
 				PRIMARY KEY (id)
 			);
 		</code></pre>
 		<p>And now insnert some numeric data</p>
 		<pre><code rel="MySQL" class="sql">
-			INSERT INTO integer_datatypes (tinyint_data,smallint_data,mediumint_data,int_data,bigint_data )
+			INSERT INTO datatypes_demo (tinyint_data,smallint_data,mediumint_data,int_data,bigint_data )
 			VALUES (100, 20000, 3000000, 100000000, 10000000000000000 );
 		</code></pre>
 	</section>
-	<section><h3>Fixed-Point Types</h3>
+	<section><h3>Integer Types - Out of range error</h3>
 		<dl class="fa">
-			<dt>DECIMAL</dt>
-				<dd>Standard SQL requires that DECIMAL(X,Y) be able to store any value with X digits and Y decimals.</dd>
-				<pre><code rel="mysql" class="sql">
-					salary DECIMAL(6,2)
-				</code></pre>
-				<dd>Values that can be stored in the salary column range from -9999.99 to 9999.99.</dd>
-			<dt>Reference: <a href="https://dev.mysql.com/doc/refman/8.0/en/fixed-point-types.html">Fixed-Point Types</a></dt>
-			<dt>Example</dt>
-			<pre><code rel="mysql" class="sql">
-				ALTER TABLE integer_datatypes ADD decimal_data DECIMAL(6,2)
+			<dt>If we try to insert a value which is out of the range of respective datatype, an error will be thrown:</dt>
+			<dd>Remember, that TINYINT SIGNED can store values in range [-128:127]</dd>
+			<pre><code rel="MySQL" class="sql">
+				INSERT INTO datatypes_demo (tinyint_data) VALUES (128);
 
-				INSERT INTO integer_datatypes (decimal_data) VALUES (10000.99)
-				# (1264, "Out of range value for column 'decimal_data' at row 1")
-
-				INSERT INTO integer_datatypes (decimal_data) VALUES (9999.99)
-				Query OK, 1 row affected
+				--Out of range value for column 'tinyint_data' at row 1
 			</code></pre>
 		</dl>
+	</section>
+	<section><h3>Fixed-Point Type: DECIMAL</h3>
+		<dl class="fa">
+			<dt>The DECIMAL type store <span class="note">exact DECIMAL data</span> values.</dt>
+			<dt>These types are used when it is important to preserve exact precision, for example with monetary data.</dt>
+			<dt>When declaring DECIMAL type we can specify the precision (X - number of digits) and scale (Y - number of decimals) </dt>
+			<pre><code rel="Syntax" class="sql">
+				col_name DECIMAL(X,Y)
+			</code></pre>
+			<dt>Let's consider next example:</dt>
+			<pre><code rel="mysql" class="sql">
+				salary DECIMAL(6,2)
+			</code></pre>
+			<dd>Here, we specified that salary values can range from -9999.99 to 9999.99.</dd>
+			<dt>Reference: <a href="https://dev.mysql.com/doc/refman/8.0/en/fixed-point-types.html">Fixed-Point Types</a></dt>
+		</dl>
+	</section>
+	<section><h3>DECIMAL - Example</h3>
+		<dl class="fa">
+			<dt>Let's add new DECIMAL column to our demo table:</dt>
+			<pre><code rel="MySQL" class="sql">
+				ALTER TABLE datatypes_demo ADD decimal_data DECIMAL(6,2);
+			</code></pre>
+			<dt>Now, let's insert some values:</dt>
+			<pre><code rel="MySQL" class="sql">
+				INSERT INTO datatypes_demo (decimal_data) VALUES (9999.99)
+				-- Query OK, 1 row affected
 
+				INSERT INTO datatypes_demo (decimal_data) VALUES (10000.99)
+				--(1264, "Out of range value for column 'decimal_data' at row 1")
+
+			</code></pre>
+		</dl>
 	</section>
-	<section><h3>Floating-Point Types</h3>
-		<a href="http://dev.mysql.com/doc/refman/8.0/en/floating-point-types.html">Floating-Point Types</a>
+	<section><h3>Floating-Point Types: FLOAT, DOUBLE</h3>
+		<dl class="fa">
+			<dt>The FLOAT and DOUBLE types represent <span class="note">approximate numeric data</span> values.</dt>
+			<dt>MySQL uses 4 bytes for single-precision values and 8 bytes for double-precision values</dt>
+			<dd><b>FLOAT</b> - defines precision from 0 to 23 which results in a 4byte single-precision column</dd>
+			<dd><b>FLOAT(p)</b> - 4 bytes if 0 <= p <= 24, 8 bytes if 25 <= p <= 53</dd>
+			<dd><b>DOUBLE</b> - defines precision from 24 to 53 results in an 8 byte double-precision DOUBLE column</dd>
+			<dt>MySQL permits a nonstandard syntax: FLOAT(M,D) or REAL(M,D) or DOUBLE PRECISION(M,D).</dt>
+			<dd>(M,D) means than values can be stored with up to M digits in total, of which D digits may be after the decimal point. For example, a column defined as FLOAT(7,4) is displayed as -999.9999.</dd>
+			<dd>MySQL performs rounding when storing values, so if you insert 999.00009 into a FLOAT(7,4) column, the approximate result is 999.0001.</dd>
+
+			<dt>Reference: <a href="http://dev.mysql.com/doc/refman/8.0/en/floating-point-types.html">Floating-Point Types</a></dt>
+		</dl>
 	</section>
-	<section><h3>Numeric Type Attributes</h3>
+	<section><h3>Floating-Point Types - Example</h3>
+		<pre><code rel="MySQL" class="sql">
+			ALTER TABLE `datatypes_demo` ADD COLUMN `float_data` FLOAT(6,2);
+
+			INSERT INTO `datatypes_demo`(`float_Data`) VALUES (9999.99);
+			-- OK, AffectedRows : 1
+
+			INSERT INTO `datatypes_demo`(`float_Data`) VALUES (9999.999);
+			-- Error: Out of range value for column 'float_data' at row 1
+
+			INSERT INTO `datatypes_demo`(`float_Data`) VALUES (9999.45678);
+			--OK, AffectedRows : 1
+			-- the value will be rounded to 9999.46
+
+		</code></pre>
+	</section>
+	<!-- <section><h3>Numeric Type Attributes</h3>
 		<dl class="fa">
 			<dt><span class="note">(X)</span> - an optional extension in parentheses following the base keyword for the type, which <span class="note">specifies the display width</span> of integer data types.</dt>
 			<dt><span class="note">ZEROFILL</span> - when used in conjunction with the optional (nonstandard) attribute ZEROFILL, the default padding of spaces is replaced with zeros. For example, for a column declared as <code>INT(4) ZEROFILL</code>, a value of 3 is retrieved as 0003.</dt>
 		</dl>
-	</section>
+	</section> -->
 </section>
 
 <section data-min="10" class="main-sesction-title"><h1>String Data Types</h1></section>
