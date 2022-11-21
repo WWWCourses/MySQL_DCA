@@ -1,3 +1,4 @@
+-- Active: 1663945334496@@127.0.0.1@3306@dca
 CREATE TABLE IF NOT EXISTS datatypes_demo(
   id INT unsigned not null auto_increment,
   tinyint_data TINYINT default null,
@@ -7,6 +8,7 @@ CREATE TABLE IF NOT EXISTS datatypes_demo(
   bigint_data BIGINT default null,
   PRIMARY KEY (id)
 );
+
 
 INSERT INTO datatypes_demo (tinyint_data,smallint_data,mediumint_data,int_data,bigint_data )
 VALUES (100, 20000, 3000000, 100000000, 10000000000000000 );

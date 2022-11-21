@@ -1,0 +1,195 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<title>DDL_and_DataTypes_HandsOn</title>
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+	<link rel="icon" type="image/x-icon" href="../../../outfit/images/favicons/mysql_logo.png">
+	<!-- css & themes include -->
+	<link rel="stylesheet" href="../../../lib/reveal.js/css/reveal.css">
+	<link rel="stylesheet" href="../../../outfit/css/themes/light.css" id="theme">
+	<!-- Printing and PDF exports -->
+	<script>
+		var link = document.createElement( 'link' );
+		link.rel = 'stylesheet';
+		link.type = 'text/css';
+		link.href = window.location.search.match( /print-pdf/gi ) ? '../../../lib/reveal.js/css/print/pdf.css' : '../../../lib/reveal.js/css/print/paper.css';
+		document.getElementsByTagName( 'head' )[0].appendChild( link );
+	</script>
+	<!--[if lt IE 9]>
+	<script src="lib/js/html5shiv.js"></script>
+	<![endif]-->
+	<!-- custom -->
+	<link rel="stylesheet" href="../../../outfit/css/reveal.js.css">
+	<base target="_blank">
+</head>
+<body>
+	<div class="reveal default center" data-transition-speed="default" data-background-transition="default">
+		<div class="top_links">
+			<a class="home_link" href="../../../index.html#DDL_and_DataTypes_HandsOn" target="_top"><i class="fa fa-home"></i></a>
+			<span class="help_link"><i class="fa fa-question"></i></span>
+			<div class="help_text">
+				<div class="note">Keyboard shortcuts:</div>
+				<div><span>N/Спейс</span><span>Next Slide</span></div>
+				<div><span>P</span><span>Previous Slide</span></div>
+				<div><span>O</span><span>Slides Overview</span></div>
+				<div><span>ctrl+left click</span><span>Zoom Element</span></div>
+				<div class="print-howto"><br>If you want print version => add '<code>?print-pdf</code>' <br> at the end of slides URL (remove '#' fragment) and then print. <br>
+				Like: https://wwwcourses.github.io/...CourseIntro.html?print-pdf </div>
+			</div>
+		</div>
+		<div class="footer theme_switch">
+			<a href="#" onclick="document.getElementById('theme').setAttribute('href','../../../outfit/css/themes/dark.css'); return false;">Dark</a>
+			<a href="#" onclick="document.getElementById('theme').setAttribute('href','../../../outfit/css/themes/light.css'); return false;">Light</a>
+			<!-- <a href="#" onclick="document.getElementById('theme').setAttribute('href','../../../outfit/css/themes/projector.css'); return false;">Projector</a> -->
+		</div>
+		<div class="slides">
+<!--
+########################################################
+##################### SLIDES START #####################
+########################################################
+-->
+<section><h1>Hands on creating, altering and deleting tables.</h1></section>
+<section data-transition="zoom">
+	<section>
+		<div class="copyright">
+			<div class="note">
+				<p>Created for</p>
+			</div>
+			<div class="company">
+				<a href="https://progressbg.net/javascript-advanced-with-reactjs/">
+				<img src="../../../outfit/images/logos/ProgressBG_logo_529_127.png" alt="ProgressBG_logo">
+				</a>
+			</div>
+		</div>
+	</section>
+	<section class="copyright" data-transition="zoom" style="margin-top: -2em;">
+		<div class="note">
+			<p>Created by</p>
+		</div>
+		<div class="company">
+		   <div class="LI-profile-badge"  data-version="v1" data-size="large" data-locale="en_US" data-type="vertical" data-theme="dark" data-vanity="ivapopova"><a class="LI-simple-link" href="https://bg.linkedin.com/in/ivapopova?trk=profile-badge">Iva E. Popova</a></div>
+		</div>
+		<!-- <div class="author">
+			<a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-sa/4.0/88x31.png"></a>
+		</div> -->
+	</section>
+</section>
+
+<section data-min="5"><h1>How to share MySQL code</h1></section>
+<section><h2>How to share MySQL code</h2>
+	<section><h3>How to share MySQL code?</h3>
+		<dl class="fa">
+			<dt>There is various ways to share you SQL code:</dt>
+			<dd><a href="http://sqlfiddle.com/">SQL Fiddle
+			</a> - A tool for easy online testing and sharing of database problems and their solutions</dd>
+			<dd><a href="https://github.com/">GitHub</a> - cloud-based service that helps developers store and manage their code, as well as track and control changes to their code.</dd>
+		</dl>
+	</section>
+</section>
+
+<section data-min="10" id="GitHubHowTo"><h1>Upload files to GitHub: HowTo</h1></section>
+<section><h2>Upload files to GitHub: HowTo</h2>
+	<section>
+		<dl class="fa">
+			<dt>The steps to create Github repository and upload files into it are given in next gif file</dt>
+			<dt>Please note, that this is just an easy way to upload files to Github, but in reality working with Github requires Git and some knowledge on it.</dt>
+		</dl>
+		<a href="./images/create_and_upload_folder_to_GitHub_using_UI.gif" alt="create_and_upload_folder_to_GitHub_using_UI.gif"><img src="./images/create_and_upload_folder_to_GitHub_using_UI.gif" alt="create_and_upload_folder_to_GitHub_using_UI.gif"></a>
+	</section>
+</section>
+
+<section data-min="1" id='hw'><h1>Exercises</h1></section>
+<section><h2>test.users</h2>
+	<section><h3>Create</h3>
+		<dl class="fa">
+			<dt>Create a database called 'test'</dt>
+			<dt>In 'test' database, create table 'users' with next fields:</dt>
+			<dd>fname</dd>
+			<dd>lname</dd>
+			<dd>birth_year</dd>
+			<dt>Choose the right data type for each field</dt>
+		</dl>
+  	</section>
+	<section><h3>Add/Remove columns</h3>
+		<dl class="fa">
+			<dt>Add next fields into test.users table:</dt>
+			<dd>birth_date</dd>
+			<dd>salary</dd>
+			<dt>Choose the right data type for each field</dt>
+			<dt>Remove column birth_year</dt>
+		</dl>
+	</section>
+
+	<section><h3>Test with insert</h3>
+		<dt>Let's insert some data into tests.users</dt>
+		<dd>You can use next syntax to insert values into columns:</dd>
+		<pre><code rel="MySQL" class="sql">
+			INSERT INTO users (fname,lname,birth_date,salary)
+			VALUES ('Jhon','Smith', '1990-11-25', 4500.50 )
+		</code></pre>
+		<dd>And next syntax to show table data:</dd>
+		<pre><code rel="MySQL" class="sql">
+			SELECT * FROM users;
+		</code></pre>
+	</section>
+</section>
+
+
+<section class="disclaimer" data-background="../../../outfit/images/for_slides/the_end_on_sand.jpg">
+	 <p>These slides are based on</p>
+	 <p>customised version of </p>
+	 <p><a href="http://hakim.se/">Hakimel</a>'s <a href="http://lab.hakim.se/reveal-js">reveal.js</a></p>
+	 <p>framework</p>
+</section>
+<!--
+########################################################
+##################### SLIDES END   #####################
+########################################################
+-->
+		</div>
+	</div>
+	<!-- Custom processing -->
+	<script src="../../../outfit/js/slides.js"></script>
+	<!-- external scripts -->
+	<script src="../../../lib/reveal.js/lib/js/head.min.js"></script>
+	<script src="../../../lib/reveal.js/js/reveal.js"></script>
+	<!-- init reveal -->
+	<script>
+		// Full list of configuration options available at:
+		// https://github.com/hakimel/reveal.js#configuration
+		var highlightjsTabSize = '  ';
+		Reveal.initialize({
+			controls: true,
+			progress: true,
+			slideNumber: 'c/t',
+			keyboard: true,
+			history: true,
+			center: true,
+			width: '100%',
+			height: '100%',
+			// slide transition
+			transition: 'concave', // none/fade/slide/convex/concave/zoom
+			// Factor of the display size that should remain empty around the content
+			margin: 0.1,
+			// shift+maous click to zoom in/out element
+			zoomKey: 'ctrl',
+			// theme: Reveal.getQueryHash().theme, // available themes are in /css/theme
+			// transition: Reveal.getQueryHash().transition || 'default'
+			// Optional reveal.js plugins
+			dependencies: [
+				{ src: '../../../lib/reveal.js/lib/js/classList.js', condition: function() { return !document.body.classList; } },
+				{ src: '../../../lib/reveal.js/plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+				{ src: '../../../lib/reveal.js/plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+				{ src: '../../../lib/reveal.js/plugin/highlight/highlight.js', async: true, callback: function() { hljs.configure({tabReplace: highlightjsTabSize}); hljs.initHighlightingOnLoad(); } },
+				{ src: '../../../lib/reveal.js/plugin/zoom-js/zoom.js', async: true },
+				{ src: '../../../lib/reveal.js/plugin/notes/notes.js', async: true }
+			]
+		});
+	</script>
+	<!-- linkedin badge -->
+
+</body>
+</html>

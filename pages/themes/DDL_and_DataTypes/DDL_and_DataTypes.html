@@ -556,7 +556,7 @@
 			<dd><b>DOUBLE</b> - defines precision from 24 to 53 results in an 8 byte double-precision DOUBLE column</dd>
 			<dt>MySQL permits a nonstandard syntax: FLOAT(M,D) or REAL(M,D) or DOUBLE PRECISION(M,D).</dt>
 			<dd>(M,D) means than values can be stored with up to M digits in total, of which D digits may be after the decimal point. For example, a column defined as FLOAT(7,4) is displayed as -999.9999.</dd>
-			<dd>MySQL performs rounding when storing values, so if you insert 999.00009 into a FLOAT(7,4) column, the approximate result is 999.0001.</dd>
+			<dd><span class="note">MySQL performs rounding when storing floating-point values</span>, so if you insert 999.00009 into a FLOAT(7,4) column, the approximate result is 999.0001.</dd>
 
 			<dt>Reference: <a href="http://dev.mysql.com/doc/refman/8.0/en/floating-point-types.html">Floating-Point Types</a></dt>
 		</dl>
@@ -587,6 +587,16 @@
 
 <section data-min="10" class="main-sesction-title"><h1>String Data Types</h1></section>
 <section class="sub-sections"><h2>String Data Types</h2>
+	<section><h3>What is string?</h3>
+		<dl class="fa">
+			<dt>A string is a sequence of bytes or characters, enclosed within either single quote (') or double quote (") characters</dt>
+			<dt>When comparing strings MySQL uses numeric character code values.</dt>
+			<dt>Character code ordering is a function of the string <a href="https://dev.mysql.com/doc/refman/8.0/en/charset-general.html">collation</a>.</dt>
+			<dd>A collation is a set of rules for comparing characters in a character set</dd>
+			<dt>Within a string, the backslash (\) symbol has a special meaning. The backslash followed by certain symbol is know as <span class="note">escape sequence</span></dt>
+			<dt>MySQL recognise these Escape Sequences: <a href="https://dev.mysql.com/doc/refman/8.0/en/string-literals.html#character-escape-sequences">Table 9.1 Special Character Escape Sequences</a></dt>
+		</dl>
+	</section>
 	<section><h3>The CHAR Data Type</h3>
 		<dl class="fa">
 			<dt><span class="code">CHAR(M)</span></dt>
@@ -597,10 +607,10 @@
 			<dt>Examples:</dt>
 				<pre><code rel="MySQL" class="sql">
 					CREATE TABLE user(
-						first_name VARCHAR(4),
+						first_name CHAR(10)
 					);
 				</code></pre>
-				<dd>Defines that <span class="code">first_name</span> column will contains 4 character strings at max.</dd>
+				<dd>Defines that <span class="code">first_name</span> column will contains 10 character strings.</dd>
 		</dl>
 	</section>
 	<section><h3>The VARCHAR Data Type</h3>
@@ -617,7 +627,7 @@
 					);
 				</code></pre>
 				<dd>Defines that <span class="code">short_notes</span> column will contains 50000 character strings.</dd>
-				<dd>The real size taken on disk will be 50000+2 bytes. Note, that this is not efective!</dd>
+				<dd>The real size taken on disk will be 50000+2 bytes.</dd>
 		</dl>
 	</section>
 	<section><h3>CHAR<->VARCHAR differences</h3>
@@ -656,6 +666,53 @@
 
 <section class="main-sesction-title"><h1>Date and Time Types</h1></section>
 <section class="sub-sections"><h2>Date and Time Types</h2>
+	<section><h3>Overview</h3>
+		<p>MySQL supports various datetime types</p>
+		<table style="outline: 0px; color: #333333; border-collapse: collapse;" width="100%" cellspacing="1" border="1" bgcolor="#ffffff">
+		<tbody style="outline: 0px;">
+			<tr>
+				<td style="border: 1px dashed #ababab;">
+				<div>DATETIME</div>
+				</td>
+				<td style="border: 1px dashed #ababab;">
+				<div>YYYY-MM-DD HH:MM:SS</div>
+				</td>
+			</tr>
+			<tr>
+				<td style="border: 1px dashed #ababab;">
+				<div>DATE</div>
+				</td>
+				<td style="border: 1px dashed #ababab;">
+				<div>YYYY-MM-DD</div>
+				</td>
+			</tr>
+			<tr>
+				<td style="border: 1px dashed #ababab;">
+				<div>TIMESTAMP</div>
+				</td>
+				<td style="border: 1px dashed #ababab;">
+				<div>YYYYMMDDHHSSMM</div>
+				</td>
+			</tr>
+			<tr>
+				<td style="border: 1px dashed #ababab;">
+				<div>TIME</div>
+				</td>
+				<td style="border: 1px dashed #ababab;">
+				<div>HH:MM:SS</div>
+				</td>
+			</tr>
+			<tr>
+				<td style="border: 1px dashed #ababab;">
+				<div>YEAR</div>
+				</td>
+				<td style="border: 1px dashed #ababab;">
+				<div>YYYY</div>
+				</td>
+			</tr>
+		</tbody>
+		</table>
+	</section>
 	<section><h3>The DATE Data Type</h3>
 		<dl class="fa">
 			<dt>A date in <span class="code">YYYY-MM-DD</span> format</dt>
@@ -664,6 +721,21 @@
 				<dd><code>'YYYY-MM-DD'</code> or <code>'YY-MM-DD'</code>, like '2016-03-28' or '16-03-28'</dd>
 			<dt>Any punctuation character may be used as the delimiter between date parts.</dt>
 				<dd>'2016/03/28' or '16/03/28'</dd>
+
+			<pre><code rel="MySQL" class="sql">
+				CREATE TABLE datetimeDemos(
+					dateDemo DATE
+				);
+
+				INSERT INTO datetimeDemos (dateDemo) VALUES ('2022-12-31');
+				-- OK
+
+				INSERT INTO datetimeDemos (dateDemo) VALUES ('2022.12.31');
+				-- OK
+
+				INSERT INTO datetimeDemos (dateDemo) VALUES ('2022-30-31');
+				-- ERROR: Incorrect date value: '2022-30-31' for column 'dateDemo'
+			</code></pre>
 		</dl>
 	</section>
 	<section><h3>The DATETIME Date Type</h3>
@@ -693,6 +765,27 @@
 			<dd>when you want to serve the data on a per-timezone basis</dd>
 		</dl>
 	</section>
+	<section><h3>Example</h3>
+		<pre><code rel="MySQL" class="sql">
+
+			CREATE TABLE datetimeDemos(
+				dt DATETIME,
+				ts TIMESTAMP
+			);
+
+			INSERT INTO `datetimeDemos`
+			VALUES ('2022-12-31 12:50:55', '2022-12-31 12:50:55');
+
+			SELECT * FROM datetimeDemos;
+
+			+---------------------+---------------------+
+			| dt                  | ts                  |
+			+---------------------+---------------------+
+			| 2022-12-31 12:50:55 | 2022-12-31 12:50:55 |
+			+---------------------+---------------------+
+
+		</code></pre>
+	</section>
 	<section><h3>The TIME Date Type</h3>
 		<dl class="fa">
 			<dt>A time in <span class="code">HH:MM:SS</span> format</dt>
@@ -708,27 +801,6 @@
 	</section>
 </section>
 
-<section data-min="1" id='hw'><h1>Exercises and HW</h1></section>
-<section><h2>Task1: users table</h2>
-	<section><h3>Description</h3>
-		<dl class="fa">
-			<dt>Create a database called 'test'</dt>
-			<dt>In 'test' database, create table 'users' with next fields:</dt>
-			<dd>fname</dd>
-			<dd>lname</dd>
-			<dd>birth_year</dd>
-			<dd>birth_date</dd>
-			<dd>salary</dd>
-		</dl>
-  	</section>
-  	<section><h3>How to share?</h3>
-		<dl class="fa">
-			<dt>Using: <a href="http://sqlfiddle.com/">SQL Fiddle
-			</a> - A tool for easy online testing and sharing of database problems and their solutions</dt>
-			<dt>Or by <a href="https://github.com/">GitHub</a> - where people build software</dt>
-		</dl>
-	</section>
-</section>
 
 
 <section class="disclaimer" data-background="../../../outfit/images/for_slides/the_end_on_sand.jpg">
