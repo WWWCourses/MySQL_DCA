@@ -1,0 +1,19 @@
+DROP DATABASE IF EXISTS books_db;
+CREATE DATABASE books_db;
+USE books_db;
+
+CREATE TABLE author (
+    id SMALLINT(3) UNSIGNED NOT NULL AUTO_INCREMENT,
+    fname VARCHAR(250) DEFAULT NULL,
+    lname VARCHAR(250) NOT NULL,
+    birth_year SMALLINT(4) DEFAULT NULL,
+    death_year SMALLINT(4) DEFAULT NULL,
+    primary key (id)
+);
+CREATE TABLE book (
+    id INT(5) UNSIGNED NOT NULL AUTO_INCREMENT,
+    author_id SMALLINT(3) UNSIGNED NOT NULL,
+    book_name VARCHAR(250) NOT NULL,
+    pub_year SMALLINT(4) UNSIGNED DEFAULT NULL,
+    primary key (id)
+);
