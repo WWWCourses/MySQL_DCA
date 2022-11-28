@@ -1,0 +1,251 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<title>CRUD_Operations_HandsOn</title>
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+	<link rel="icon" type="image/x-icon" href="../../../outfit/images/favicons/mysql_logo.png">
+	<!-- css & themes include -->
+	<link rel="stylesheet" href="../../../lib/reveal.js/css/reveal.css">
+	<link rel="stylesheet" href="../../../outfit/css/themes/light.css" id="theme">
+	<!-- Printing and PDF exports -->
+	<script>
+		var link = document.createElement( 'link' );
+		link.rel = 'stylesheet';
+		link.type = 'text/css';
+		link.href = window.location.search.match( /print-pdf/gi ) ? '../../../lib/reveal.js/css/print/pdf.css' : '../../../lib/reveal.js/css/print/paper.css';
+		document.getElementsByTagName( 'head' )[0].appendChild( link );
+	</script>
+	<!--[if lt IE 9]>
+	<script src="lib/js/html5shiv.js"></script>
+	<![endif]-->
+	<!-- custom -->
+	<link rel="stylesheet" href="../../../outfit/css/reveal.js.css">
+	<base target="_blank">
+</head>
+<body>
+	<div class="reveal default center" data-transition-speed="default" data-background-transition="default">
+		<div class="top_links">
+			<a class="home_link" href="../../../index.html#CRUD_Operations_HandsOn" target="_top"><i class="fa fa-home"></i></a>
+			<span class="help_link"><i class="fa fa-question"></i></span>
+			<div class="help_text">
+				<div class="note">Keyboard shortcuts:</div>
+				<div><span>N/Спейс</span><span>Next Slide</span></div>
+				<div><span>P</span><span>Previous Slide</span></div>
+				<div><span>O</span><span>Slides Overview</span></div>
+				<div><span>ctrl+left click</span><span>Zoom Element</span></div>
+				<div class="print-howto"><br>If you want print version => add '<code>?print-pdf</code>' <br> at the end of slides URL (remove '#' fragment) and then print. <br>
+				Like: https://wwwcourses.github.io/...CourseIntro.html?print-pdf </div>
+			</div>
+		</div>
+		<div class="footer theme_switch">
+			<a href="#" onclick="document.getElementById('theme').setAttribute('href','../../../outfit/css/themes/dark.css'); return false;">Dark</a>
+			<a href="#" onclick="document.getElementById('theme').setAttribute('href','../../../outfit/css/themes/light.css'); return false;">Light</a>
+			<!-- <a href="#" onclick="document.getElementById('theme').setAttribute('href','../../../outfit/css/themes/projector.css'); return false;">Projector</a> -->
+		</div>
+		<div class="slides">
+<!--
+########################################################
+##################### SLIDES START #####################
+########################################################
+-->
+<section><h1>Упражнение по добавяне, променяне, премахване и селектиране на данни</h1></section>
+<section data-transition="zoom">
+	<section>
+		<div class="copyright">
+			<div class="note">
+				<p>Created for</p>
+			</div>
+			<div class="company">
+				<a href="https://progressbg.net/javascript-advanced-with-reactjs/">
+				<img src="../../../outfit/images/logos/ProgressBG_logo_529_127.png" alt="ProgressBG_logo">
+				</a>
+			</div>
+		</div>
+	</section>
+	<section class="copyright" data-transition="zoom" style="margin-top: -2em;">
+		<div class="note">
+			<p>Created by</p>
+		</div>
+		<div class="company">
+		   <div class="LI-profile-badge"  data-version="v1" data-size="large" data-locale="en_US" data-type="vertical" data-theme="dark" data-vanity="ivapopova"><a class="LI-simple-link" href="https://bg.linkedin.com/in/ivapopova?trk=profile-badge">Iva E. Popova</a></div>
+		</div>
+		<!-- <div class="author">
+			<a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-sa/4.0/88x31.png"></a>
+		</div> -->
+	</section>
+</section>
+
+
+<section data-min="5"><h1>Task1: Create books_db schema</h1></section>
+<section><h2>Task1: CRUD in books_db schema</h2>
+	<section><h3>Create schema</h3>
+		<dl class="fa">
+			<dt>Create a database `books_db`</dt>
+			<dt>In `books_db` create 2 tables, following next ER Diagram:</dt>
+			<a href="./images/books_db_ER_diagram.png"><img src="./images/books_db_ER_diagram.png" alt="books_db_ER_diagram.png" style="height: 40vh;"></a>
+			<dt>Note that `authors` has next constraints:</dt>
+			<dd>`id`: PRIMARY KEY</dd>
+			<dd>`lname`: INDEX for first 10 chars, not null values </dd>
+			<dt>Note that `books` has next constraints:</dt>
+			<dd>`id`: PRIMARY KEY</dd>
+			<dd>`book_name`: INDEX for first 10 chars, not null values </dd>
+			<dd>`author_id`: FOREIGN KEY to authors.id with constraint: ON DELETE CASCADE</dd>
+		</dl>
+	</section>
+	<section><h3>Insert data</h3>
+		<dl class="fa">
+			<dt>Insert into `authors` tables, next data:</dt>
+			<pre><code rel="Terminal" class="bash">
+				+----+---------+----------+------------+------------+
+				| id | fname   | lname    | birth_year | death_year |
+				+----+---------+----------+------------+------------+
+				| 1  | Kurt    | Vonnegut | 1922       | 2007       |
+				| 2  | Douglas | Adams    | 1952       | 2001       |
+				| 3  | Charles | Dodgson  | 1832       | 1898       |
+				+----+---------+----------+------------+------------+
+			</code></pre>
+			<dt>Insert into `books` table, the data given in next sql file: <a href="./dumps/books_db.books_data.sql">books_db.books_data.sql</a></dt>
+		</dl>
+	</section>
+	<section><h3>Simple selects</h3>
+		<ol type="1">
+			<li>Select all books (name and year) sorted by pub_date, ascending</li>
+			<li>How many are the books published before 1900 year?</li>
+			<li>Select all books (name and year) published in 20th century:</li>
+			<li>Show how many years each of the authors have lived:</li>
+			<pre><code rel="Expected Output" class="bash">
+				+----------+-------+
+				| lname    | lived |
+				+----------+-------+
+				| Vonnegut | 85    |
+				| Adams    | 49    |
+				| Carroll  | 66    |
+				+----------+-------+
+			</code></pre>
+		</ol>
+	</section>
+	<section><h3>More selects</h3>
+		<ol>
+			<li>Select all books (name and year) written by 'Kurt Vonnegut'</li>
+			<pre><code rel="Expected Output" class="bash">
+				+------------------------+----------+
+				| book_name              | pub_year |
+				+------------------------+----------+
+				| The Sirens of Titan    | 1959     |
+				| Mother Night           | 1961     |
+				| Cat's Cradle           | 1963     |
+				| God Bless You          | 1965     |
+				| Slaughterhouse         | 1969     |
+				| Breakfast of Champions | 1973     |
+				+------------------------+----------+
+			</code></pre>
+			<li>Select the last 3 published books (name and year) written by 'Kurt Vonnegut'</li>
+			<pre><code rel="Expected Output" class="bash">
+				+------------------------+----------+
+				| book_name              | pub_year |
+				+------------------------+----------+
+				| Breakfast of Champions | 1973     |
+				| Slaughterhouse         | 1969     |
+				| God Bless You          | 1965     |
+				+------------------------+----------+
+			</code></pre>
+		</ol>
+	</section>
+	<section><h3 class="advanced">Select with group by</h3>
+		<ol>
+			<li>Show how many books each of the authors has published?</li>
+			<pre><code rel="Expected Output" class="bash">
+				+----------+-------------+
+				| author   | books_count |
+				+----------+-------------+
+				| Vonnegut | 6           |
+				| Adams    | 8           |
+				| Dodgson  | 21          |
+				+----------+-------------+
+			</code></pre>
+		</ol>
+	</section>
+	<section><h3>Update</h3>
+		<ol>
+			<li>Rename author 'Charles Dodgson' to 'Lewis Carroll'</li>
+			<li>After successful rename, table authors must be:</li>
+			<pre><code rel="MySQL" class="sql">
+				+----+---------+----------+------------+------------+
+				| id | fname   | lname    | birth_year | death_year |
+				+----+---------+----------+------------+------------+
+				| 1  | Kurt    | Vonnegut | 1922       | 2007       |
+				| 2  | Douglas | Adams    | 1952       | 2001       |
+				| 3  | Lewis   | Carroll  | 1832       | 1898       |
+				+----+---------+----------+------------+------------+
+			</code></pre>
+		</ol>
+	</section>
+</section>
+
+<!-- <section data-min="1" id='hw'><h1>Exercises</h1></section>
+<section><h2>Task1: __task_title__</h2>
+  <section><h3>__task_description__</h3>
+  	<dl class="fa">
+  		<dt></dt>
+  	</dl>
+  </section>
+</section> -->
+
+<section class="disclaimer" data-background="../../../outfit/images/for_slides/the_end_on_sand.jpg">
+	 <p>These slides are based on</p>
+	 <p>customised version of </p>
+	 <p><a href="http://hakim.se/">Hakimel</a>'s <a href="http://lab.hakim.se/reveal-js">reveal.js</a></p>
+	 <p>framework</p>
+</section>
+<!--
+########################################################
+##################### SLIDES END   #####################
+########################################################
+-->
+		</div>
+	</div>
+	<!-- Custom processing -->
+	<script src="../../../outfit/js/slides.js"></script>
+	<!-- external scripts -->
+	<script src="../../../lib/reveal.js/lib/js/head.min.js"></script>
+	<script src="../../../lib/reveal.js/js/reveal.js"></script>
+	<!-- init reveal -->
+	<script>
+		// Full list of configuration options available at:
+		// https://github.com/hakimel/reveal.js#configuration
+		var highlightjsTabSize = '  ';
+		Reveal.initialize({
+			controls: true,
+			progress: true,
+			slideNumber: 'c/t',
+			keyboard: true,
+			history: true,
+			center: true,
+			width: '100%',
+			height: '100%',
+			// slide transition
+			transition: 'concave', // none/fade/slide/convex/concave/zoom
+			// Factor of the display size that should remain empty around the content
+			margin: 0.1,
+			// shift+maous click to zoom in/out element
+			zoomKey: 'ctrl',
+			// theme: Reveal.getQueryHash().theme, // available themes are in /css/theme
+			// transition: Reveal.getQueryHash().transition || 'default'
+			// Optional reveal.js plugins
+			dependencies: [
+				{ src: '../../../lib/reveal.js/lib/js/classList.js', condition: function() { return !document.body.classList; } },
+				{ src: '../../../lib/reveal.js/plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+				{ src: '../../../lib/reveal.js/plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+				{ src: '../../../lib/reveal.js/plugin/highlight/highlight.js', async: true, callback: function() { hljs.configure({tabReplace: highlightjsTabSize}); hljs.initHighlightingOnLoad(); } },
+				{ src: '../../../lib/reveal.js/plugin/zoom-js/zoom.js', async: true },
+				{ src: '../../../lib/reveal.js/plugin/notes/notes.js', async: true }
+			]
+		});
+	</script>
+	<!-- linkedin badge -->
+
+</body>
+</html>
