@@ -1,0 +1,569 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<title>JOIN_statements</title>
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+	<link rel="icon" type="image/x-icon" href="../../../outfit/images/favicons/mysql_logo.png">
+	<!-- css & themes include -->
+	<link rel="stylesheet" href="../../../lib/reveal.js/css/reveal.css">
+	<link rel="stylesheet" href="../../../outfit/css/themes/light.css" id="theme">
+	<!-- Printing and PDF exports -->
+	<script>
+		var link = document.createElement( 'link' );
+		link.rel = 'stylesheet';
+		link.type = 'text/css';
+		link.href = window.location.search.match( /print-pdf/gi ) ? '../../../lib/reveal.js/css/print/pdf.css' : '../../../lib/reveal.js/css/print/paper.css';
+		document.getElementsByTagName( 'head' )[0].appendChild( link );
+	</script>
+	<!--[if lt IE 9]>
+	<script src="lib/js/html5shiv.js"></script>
+	<![endif]-->
+	<!-- custom -->
+	<link rel="stylesheet" href="../../../outfit/css/reveal.js.css">
+	<base target="_blank">
+</head>
+<body>
+	<div class="reveal default center" data-transition-speed="default" data-background-transition="default">
+		<div class="top_links">
+			<a class="home_link" href="../../../index.html#JOIN_statements" target="_top"><i class="fa fa-home"></i></a>
+			<span class="help_link"><i class="fa fa-question"></i></span>
+			<div class="help_text">
+				<div class="note">Keyboard shortcuts:</div>
+				<div><span>N/Спейс</span><span>Next Slide</span></div>
+				<div><span>P</span><span>Previous Slide</span></div>
+				<div><span>O</span><span>Slides Overview</span></div>
+				<div><span>ctrl+left click</span><span>Zoom Element</span></div>
+				<div class="print-howto"><br>If you want print version => add '<code>?print-pdf</code>' <br> at the end of slides URL (remove '#' fragment) and then print. <br>
+				Like: https://wwwcourses.github.io/...CourseIntro.html?print-pdf </div>
+			</div>
+		</div>
+		<div class="footer theme_switch">
+			<a href="#" onclick="document.getElementById('theme').setAttribute('href','../../../outfit/css/themes/dark.css'); return false;">Dark</a>
+			<a href="#" onclick="document.getElementById('theme').setAttribute('href','../../../outfit/css/themes/light.css'); return false;">Light</a>
+			<!-- <a href="#" onclick="document.getElementById('theme').setAttribute('href','../../../outfit/css/themes/projector.css'); return false;">Projector</a> -->
+		</div>
+		<div class="slides">
+<!--
+########################################################
+##################### SLIDES START #####################
+########################################################
+-->
+<section><h1>JOIN statements</h1></section>
+<section data-transition="zoom">
+	<section>
+		<div class="copyright">
+			<div class="note">
+				<p>Created for</p>
+			</div>
+			<div class="company">
+				<a href="https://progressbg.net/javascript-advanced-with-reactjs/">
+				<img src="../../../outfit/images/logos/ProgressBG_logo_529_127.png" alt="ProgressBG_logo">
+				</a>
+			</div>
+		</div>
+	</section>
+	<section class="copyright" data-transition="zoom" style="margin-top: -2em;">
+		<div class="note">
+			<p>Created by</p>
+		</div>
+		<div class="company">
+		   <div class="LI-profile-badge"  data-version="v1" data-size="large" data-locale="en_US" data-type="vertical" data-theme="dark" data-vanity="ivapopova"><a class="LI-simple-link" href="https://bg.linkedin.com/in/ivapopova?trk=profile-badge">Iva E. Popova</a></div>
+		</div>
+		<!-- <div class="author">
+			<a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-sa/4.0/88x31.png"></a>
+		</div> -->
+	</section>
+</section>
+
+<section data-min="5"><h1>Demo DB</h1></section>
+<section><h2>Demo DB</h2>
+	<section>
+		<dl class="fa">
+			<dt>To illustrate the JOIN clauses in next slides I'll use a <b>users_db</b> with next tables:</dt>
+			<a href="./images/drawio/user_addresses_tables.drawio.png"><img src="./images/drawio/user_addresses_tables.drawio.png" alt="user_addresses_tables.drawio.png"></a>
+			<dt>You can use <a href="./examples/users_addresses/dump.sql">dump.sql</a> file to create the tables with given data.</dt>
+		</dl>
+	</section>
+</section>
+
+<section data-min="50"><h1>JOIN statements overview</h1></section>
+<section><h2>JOIN statements overview</h2>
+	<section>
+		<a href="./images/JOINS_SET_Diagram.jpeg"><img src="./images/JOINS_SET_Diagram.jpeg" alt="JOINS_SET_Diagram.jpeg" style="height: 80vh;"></a>
+	</section>
+</section>
+
+<section data-min="10"><h1>MySQL INNER JOIN clause</h1></section>
+<section><h2>MySQL INNER JOIN clause</h2>
+	<section><h3>Overview</h3>
+		<dl class="fa">
+			<dt>In MySQL, JOIN and INNER JOIN are syntactic equivalents (they can replace each other).</dt>
+			<div style="display: flex;">
+				<a href="./images/INNER_JOIN_tables_diagram.png"><img src="./images/INNER_JOIN_tables_diagram.png" alt="INNER_JOIN_tables_diagram.png" style="height: 30vh;"></a>
+				<a href="./images/inner_join.png"><img src="./images/inner_join.png" alt="inner_join.png" style="height: 30vh;"></a>
+			</div>
+			<dt>Basic syntax:</dt>
+			<pre><code rel="MySQL" class="sql">
+				SELECT column_list
+				FROM table_1
+				INNER JOIN table_2 ON join_condition;
+			</code></pre>
+			<dt>The inner join clause joins two tables based on a condition.</dt>
+			<dt>The inner join clause compares each row from the first table with every row from the second table.If values from both rows satisfy the join condition, the inner join clause creates a new row whose column contains all columns of the two rows from both tables and includes this new row in the result set.</dt>
+			<dt>In other words, the inner join clause includes only matching rows from both tables.</dt>
+		</dl>
+	</section>
+	<section><h3>Example</h3>
+		<pre><code rel="MySQL" class="sql">
+			SELECT *
+			FROM users AS u INNER JOIN addresses AS a
+			ON u.id = a.user_id;
+		</code></pre>
+		<pre><code rel="Terminal" class="bash">
+			+----+-------+----+---------+-------+
+			| id | name  | id | user_id | city  |
+			+----+-------+----+---------+-------+
+			| 1  | Ivan  | 1  | 1       | Sofia |
+			| 3  | Merry | 2  | 3       | Paris |
+			+----+-------+----+---------+-------+
+		</code></pre>
+	</section>
+</section>
+
+<section><h2>MySQL LEFT [OUTER] JOIN</h2>
+	<section><h3>Overview</h3>
+		<dl class="fa">
+			<div style="display: flex;">
+				<a href="./images/LEFT_JOIN_tables_diagram.webp"><img src="./images/LEFT_JOIN_tables_diagram.webp" alt="LEFT_JOIN_tables_diagram.png" style="height: 30vh;"></a>
+				<a href="./images/left_join.png"><img src="./images/left_join.png" alt="left_join.png" style="height: 30vh;"></a>
+			</div>
+			<dt>Basic Syntax:</dt>
+			<pre><code rel="MySQL" class="sql">
+				SELECT column_list
+				FROM table_1
+				LEFT JOIN table_2 ON join_condition;
+			</code></pre>
+			<dt>LEFT JOIN selects <span class="note">all data from the left table</span> whether there are matching rows exist in the right table or not</dt>
+			<dt>In case there are no matching rows from the right table found, the left join uses NULL values for columns of the row from the right table in the result set.</dt>
+		</dl>
+	</section>
+	<section><h3>Example</h3>
+		<pre><code rel="MySQL" class="sql">
+			SELECT *
+			FROM users AS u LEFT JOIN addresses AS a
+			ON u.id = a.user_id;
+		</code></pre>
+		<pre><code rel="Terminal" class="bash">
+			+----+-------+--------+---------+--------+
+			| id | name  | id     | user_id | city   |
+			+----+-------+--------+---------+--------+
+			| 1  | Ivan  | 1      | 1       | Sofia  |
+			| 2  | John  | &lt;null&gt; | &lt;null&gt;  | &lt;null&gt; |
+			| 3  | Merry | 2      | 3       | Paris  |
+			| 4  | Pesho | &lt;null&gt; | &lt;null&gt;  | &lt;null&gt; |
+			+----+-------+--------+---------+--------+
+		</code></pre>
+	</section>
+	<section><h3>LEFT JOIN with exclusion</h3>
+		<dl class="fa">
+			<dt>It gives all records of the left table (Table1) excluding the common elements from right table(Table2)</dt>
+			<a href="./images/left_outer_join_with_exclusion.png"><img src="./images/left_outer_join_with_exclusion.png" alt="left_outer_join_with_exclusion.png"></a>
+		</dl>
+	</section>
+	<section><h3>LEFT JOIN with exclusion - example</h3>
+		<pre><code rel="MySQL" class="sql">
+			SELECT *
+			FROM users AS u LEFT JOIN addresses AS a
+			ON u.id = a.user_id
+			WHERE a.user_id IS NULL;
+		</code></pre>
+		<pre><code rel="Terminal" class="bash">
+			+----+-------+--------+---------+--------+
+			| id | name  | id     | user_id | city   |
+			+----+-------+--------+---------+--------+
+			| 2  | John  | &lt;null&gt; | &lt;null&gt;  | &lt;null&gt; |
+			| 4  | Pesho | &lt;null&gt; | &lt;null&gt;  | &lt;null&gt; |
+			+----+-------+--------+---------+--------+
+		</code></pre>
+	</section>
+</section>
+
+<section><h2>MySQL RIGHT [OUTER] JOIN</h2>
+	<section><h3>Overview</h3>
+		<dl class="fa">
+			<a href="./images/right_join.png"><img src="./images/right_join.png" alt="right_join.png" style="height: 30vh;"></a>
+			<dt>Basic Syntax:</dt>
+			<pre><code rel="MySQL" class="sql">
+				SELECT column_list
+				FROM table_1
+				RIGHT JOIN table_2 ON join_condition;
+			</code></pre>
+			<dt>The right join clause is similar to the left join clause except that the treatment of left and right tables is reversed.</dt>
+			<dt>The right join clause selects all rows from the right table and matches rows in the left table. If a row from the right table does not have matching rows from the left table, the column of the left table will have NULL in the final result set.</dt>
+		</dl>
+	</section>
+	<section><h3>Example</h3>
+		<pre><code rel="MySQL" class="sql">
+			SELECT u.name, a.city
+			FROM users AS u RIGHT JOIN addresses AS a
+			ON u.id = a.user_id;
+		</code></pre>
+		<pre><code rel="Terminal" class="bash">
+			+--------+----------+
+			| name   | city     |
+			+--------+----------+
+			| Ivan   | Sofia    |
+			| Merry  | Paris    |
+			| &lt;null&gt; | London   |
+			| &lt;null&gt; | New York |
+			+--------+----------+
+		</code></pre>
+	</section>
+	<section><h3>RIGHT JOIN with exclusion</h3>
+		<dl class="fa">
+			<dt>It gives all records of the right table (Table2) excluding the common elements from left table(Table1)</dt>
+			<a href="./images/right_outer_join_with_exclusion.png"><img src="./images/right_outer_join_with_exclusion.png" alt="right_outer_join_with_exclusion.png"></a>
+		</dl>
+	</section>
+	<section><h3>RIGHT JOIN with exclusion - example</h3>
+		<pre><code rel="MySQL" class="sql">
+			SELECT *
+			FROM users AS u RIGHT JOIN addresses AS a
+			ON u.id = a.user_id
+			WHERE u.id IS NULL;
+		</code></pre>
+		<pre><code rel="Terminal" class="bash">
+			+--------+--------+----+---------+----------+
+			| id     | name   | id | user_id | city     |
+			+--------+--------+----+---------+----------+
+			| &lt;null&gt; | &lt;null&gt; | 3  | &lt;null&gt;  | London   |
+			| &lt;null&gt; | &lt;null&gt; | 4  | &lt;null&gt;  | New York |
+			+--------+--------+----+---------+----------+
+		</code></pre>
+	</section>
+</section>
+
+<section><h2>MySQL FULL OUTER JOIN</h2>
+	<section><h3>Overview</h3>
+		<dl class="fa">
+			<div style="display: flex;">
+				<a href="./images/FULL_OUTER_JOIN_tables_diagram.webp"><img src="./images/FULL_OUTER_JOIN_tables_diagram.webp" alt="FULL_OUTER_JOIN_tables_diagram.png" style="height: 30vh;"></a>
+				<a href="./images/full_outer_join.png"><img src="./images/full_outer_join.png" alt="full_outer_join.png" style="height: 30vh;"></a>
+			</div>
+			<dt class="note">Note that MySQL did not support FULL OUTER JOIN, but we can emulate it with: LEFT JOIN UNION [ALL] RIGHT JOIN</dt>
+			<pre><code rel="MySQL" class="sql">
+				SELECT column_list
+				FROM table_1
+				LEFT JOIN table_2 ON join_condition
+				UNION
+				SELECT column_list
+				FROM table_1
+				RIGHT JOIN table_2 ON join_condition
+			</code></pre>
+			<dd>The <a href="https://dev.mysql.com/doc/refman/8.0/en/union.html">UNION</a> clause is used to combine the result-set of two or more SELECT statements. IT selects only distinct values by default. To allow duplicate values we can use UNION ALL</dd>
+			<dt>FULL OUTER JOIN returns all records when there is a match in left (table1) or right (table2) table records</dt>
+		</dl>
+	</section>
+	<section><h3>Example</h3>
+		<pre><code rel="MySQL" class="sql">
+			SELECT *
+			FROM users AS u LEFT JOIN addresses AS a
+			ON u.id = a.user_id
+
+			UNION
+
+			SELECT *
+			FROM users AS u RIGHT JOIN addresses AS a
+			ON u.id = a.user_id;
+		</code></pre>
+		<pre><code rel="Terminal" class="bash">
+			+--------+--------+--------+---------+----------+
+			| id     | name   | id     | user_id | city     |
+			+--------+--------+--------+---------+----------+
+			| 1      | Ivan   | 1      | 1       | Sofia    |
+			| 2      | John   | &lt;null&gt; | &lt;null&gt;  | &lt;null&gt;   |
+			| 3      | Merry  | 2      | 3       | Paris    |
+			| 4      | Pesho  | &lt;null&gt; | &lt;null&gt;  | &lt;null&gt;   |
+			| &lt;null&gt; | &lt;null&gt; | 3      | &lt;null&gt;  | London   |
+			| &lt;null&gt; | &lt;null&gt; | 4      | &lt;null&gt;  | New York |
+			+--------+--------+--------+---------+----------+
+
+		</code></pre>
+	</section>
+	<section><h3>FULL OUTER JOIN with exclusion</h3>
+		<dl class="fa">
+			<dt>It gives all uncommon records of both the tables</dt>
+			<a href="./images/full_outer_join_with_exclusion.png"><img src="./images/full_outer_join_with_exclusion.png" alt="full_outer_join_with_exclusion.png"></a>
+		</dl>
+	</section>
+	<section><h3>FULL OUTER JOIN with exclusion - example</h3>
+		<pre><code rel="MySQL" class="sql">
+			SELECT *
+			FROM users AS u LEFT JOIN addresses AS a
+			ON u.id = a.user_id
+			WHERE a.user_id IS  NULL
+
+			UNION
+
+			SELECT *
+			FROM users AS u RIGHT JOIN addresses AS a
+			ON u.id = a.user_id
+
+			WHERE u.id IS NULL;
+		</code></pre>
+		<pre><code rel="Terminal" class="bash">
+			+--------+--------+--------+---------+----------+
+			| id     | name   | id     | user_id | city     |
+			+--------+--------+--------+---------+----------+
+			| 2      | John   | &lt;null&gt; | &lt;null&gt;  | &lt;null&gt;   |
+			| 4      | Pesho  | &lt;null&gt; | &lt;null&gt;  | &lt;null&gt;   |
+			| &lt;null&gt; | &lt;null&gt; | 3      | &lt;null&gt;  | London   |
+			| &lt;null&gt; | &lt;null&gt; | 4      | &lt;null&gt;  | New York |
+			+--------+--------+--------+---------+----------+
+		</code></pre>
+	</section>
+</section>
+
+<section><h2>MySQL SEMI JOIN</h2>
+	<section><h3>Overview</h3>
+		<dl class="fa">
+			<a href="./images/semi_join.png"><img src="./images/semi_join.png" alt="semi_join.png" style="height: 30vh;"></a>
+			<dt class="note">Note that MySQL did not support SEMI JOIN, but we can emulate it with <a href="https://dev.mysql.com/doc/refman/8.0/en/exists-and-not-exists-subqueries.html">EXISTS</a></dt>
+			<pre><code rel="MySQL" class="sql">
+				SELECT column_list
+				FROM table_1
+				WHERE EXISTS (
+					SELECT * FROM table_2
+					WHERE join_condition
+				);
+			</code></pre>
+			<dt>SEMI JOIN returns more restricted set that INNER JOIN.</dt>
+			<dt>With SEMI JOIN, we get only the first matching record in the left hand side table in the output. As soon as a match is hit, the join will move to the next id.</dt>
+			<dt>SEMI JOIN returns only columns from table_1.</dt>
+		</dl>
+	</section>
+	<section><h3>Example</h3>
+		<dl class="fa">
+			<dt>Let's add multiple records in child table to see the difference between INNER JOIN and SEMI JOIN</dt>
+			<pre><code rel="MySQL" class="sql">
+				UPDATE addresses SET user_id=1 WHERE addresses.id=3;
+
+				SELECT * FROM addresses;
+				+----+---------+----------+
+				| id | user_id | city     |
+				+----+---------+----------+
+				| 1  | 1       | Sofia    |
+				| 2  | 3       | Paris    |
+				| 3  | 1       | London   |
+				| 4  | &lt;null&gt;  | New York |
+				+----+---------+----------+
+			</code></pre>
+			<dt>Now lets perform SEMI JOIN and INNER JOIN:</dt>
+			<div style="display: flex; gap:3em;">
+				<pre><code rel="SEMI JOIN" class="sql">
+					SELECT *
+					FROM users AS u
+					WHERE EXISTS (
+						SELECT * FROM addresses AS a
+						WHERE u.id = a.user_id
+					);
+
+					+----+-------+
+					| id | name  |
+					+----+-------+
+					| 1  | Ivan  |
+					| 3  | Merry |
+					+----+-------+
+				</code></pre>
+				<pre><code rel="INNER JOIN" class="sql" style="height: 24.3vh;">
+					SELECT *
+					FROM users as u INNER JOIN addresses as a
+					ON u.id = a.user_id;
+
+					+----+-------+----+---------+-------+
+					| id | name  | id | user_id | city  |
+					+----+-------+----+---------+-------+
+					| 1  | Ivan  | 1  | 1       | Sofia |
+					| 3  | Merry | 2  | 3       | Paris |
+					| 1  | Ivan  | 3  | 1       | London|
+					+----+-------+----+---------+-------+
+
+				</code></pre>
+			</div>
+		</dl>
+	</section>
+</section>
+
+
+<section><h2>MySQL ANTI SEMI JOIN</h2>
+	<section><h3>Overview</h3>
+		<dl class="fa">
+			<a href="./images/anti_semi_join.png"><img src="./images/anti_semi_join.png" alt="anti_semi_join.png" style="height: 30vh;"></a>
+			<dt class="note">Note that MySQL did not support ANTI SEMI JOIN, but we can emulate it with <a href="https://dev.mysql.com/doc/refman/8.0/en/exists-and-not-exists-subqueries.html">NOT EXISTS</a>:</dt>
+			<pre><code rel="MySQL" class="sql">
+				SELECT column_list
+				FROM table_1
+				WHERE NOT EXISTS (
+					SELECT * FROM table_2
+					WHERE join_condition
+				);
+			</code></pre>
+			<dt>With ANTI SEMI JOIN we get the rows from table_1 which did not have any matching records in table_2 </dt>
+		</dl>
+	</section>
+	<section><h3>Example</h3>
+		<pre><code rel="MySQL" class="sql">
+			SELECT *
+			FROM users AS u
+			WHERE NOT EXISTS (
+				SELECT * FROM addresses AS a
+				WHERE u.id = a.user_id
+			);
+		</code></pre>
+		<pre><code rel="Terminal" class="bash">
+			+----+-------+
+			| id | name  |
+			+----+-------+
+			| 2  | John  |
+			| 4  | Pesho |
+			+----+-------+
+		</code></pre>
+	</section>
+</section>
+
+<section><h2>MySQL CROSS JOIN</h2>
+	<section><h3>Overview</h3>
+		<dl class="fa">
+			<a href="./images/cross_join.webp"><img src="./images/cross_join.webp" alt="cross_join.webp" style="height: 30vh;"></a>
+			<dt>Basic syntax</dt>
+			<pre><code rel="MySQL" class="sql">
+				-- with explicit syntax:
+				SELECT *
+				FROM table_1
+				CROSS JOIN table2;
+
+				-- next is the same, but implicit:
+				SELECT * from table_1, table_2;
+			</code></pre>
+			<dt>The SQL Server Cross Join returns the Cartesian product of both tables.</dt>
+			<dt>It means every record in table_1 is combined with every record in table_2. The resulting records number is equal to the multiplication of table_1 and table2 records, and can become very huge!</dt>
+			<dt>The CROSS JOIN is used to generate all combinations of records in two tables</dt>
+		</dl>
+	</section>
+	<section><h3>Example</h3>
+		<pre><code rel="MySQL" class="sql">
+			SELECT *
+			FROM users
+			CROSS JOIN addresses;
+		</code></pre>
+		<pre><code rel="Terminal" class="bash" style="min-height: 50vh;">
+			+----+-------+----+---------+----------+
+			| id | name  | id | user_id | city     |
+			+----+-------+----+---------+----------+
+			| 4  | Pesho | 1  | 1       | Sofia    |
+			| 3  | Merry | 1  | 1       | Sofia    |
+			| 2  | John  | 1  | 1       | Sofia    |
+			| 1  | Ivan  | 1  | 1       | Sofia    |
+			| 4  | Pesho | 2  | 3       | Paris    |
+			| 3  | Merry | 2  | 3       | Paris    |
+			| 2  | John  | 2  | 3       | Paris    |
+			| 1  | Ivan  | 2  | 3       | Paris    |
+			| 4  | Pesho | 3  | 1       | London   |
+			| 3  | Merry | 3  | 1       | London   |
+			| 2  | John  | 3  | 1       | London   |
+			| 1  | Ivan  | 3  | 1       | London   |
+			| 4  | Pesho | 4  | &lt;null&gt;  | New York |
+			| 3  | Merry | 4  | &lt;null&gt;  | New York |
+			| 2  | John  | 4  | &lt;null&gt;  | New York |
+			| 1  | Ivan  | 4  | &lt;null&gt;  | New York |
+			+----+-------+----+---------+----------+
+
+			16 rows in set
+
+		</code></pre>
+	</section>
+</section>
+
+
+
+
+
+<!--
+<section data-min="5"><h1>More Readings</h1></section>
+<section><h2>More Readings</h2>
+  <section>
+	<dl class="fa">
+		<dt><a href="http://pixelcount.com/MySQL_Joins.pdf">MySQL JOIN Types (Cheet Sheet)</a></dt>
+		<dt><a href="https://dataschool.com/how-to-teach-people-sql/sql-join-types-explained-visually/">SQL Join Types Explained Visually</a></dt>
+	</dl>
+
+  </section>
+</section> -->
+
+<!-- <section data-min="1" id='hw'><h1>Exercises</h1></section>
+<section><h2>Task1: __task_title__</h2>
+  <section><h3>__task_description__</h3>
+  	<dl class="fa">
+  		<dt></dt>
+  	</dl>
+  </section>
+</section> -->
+
+<section class="disclaimer" data-background="../../../outfit/images/for_slides/the_end_on_sand.jpg">
+	 <p>These slides are based on</p>
+	 <p>customised version of </p>
+	 <p><a href="http://hakim.se/">Hakimel</a>'s <a href="http://lab.hakim.se/reveal-js">reveal.js</a></p>
+	 <p>framework</p>
+</section>
+<!--
+########################################################
+##################### SLIDES END   #####################
+########################################################
+-->
+		</div>
+	</div>
+	<!-- Custom processing -->
+	<script src="../../../outfit/js/slides.js"></script>
+	<!-- external scripts -->
+	<script src="../../../lib/reveal.js/lib/js/head.min.js"></script>
+	<script src="../../../lib/reveal.js/js/reveal.js"></script>
+	<!-- init reveal -->
+	<script>
+		// Full list of configuration options available at:
+		// https://github.com/hakimel/reveal.js#configuration
+		var highlightjsTabSize = '  ';
+		Reveal.initialize({
+			controls: true,
+			progress: true,
+			slideNumber: 'c/t',
+			keyboard: true,
+			history: true,
+			center: true,
+			width: '100%',
+			height: '100%',
+			// slide transition
+			transition: 'concave', // none/fade/slide/convex/concave/zoom
+			// Factor of the display size that should remain empty around the content
+			margin: 0.1,
+			// shift+maous click to zoom in/out element
+			zoomKey: 'ctrl',
+			// theme: Reveal.getQueryHash().theme, // available themes are in /css/theme
+			// transition: Reveal.getQueryHash().transition || 'default'
+			// Optional reveal.js plugins
+			dependencies: [
+				{ src: '../../../lib/reveal.js/lib/js/classList.js', condition: function() { return !document.body.classList; } },
+				{ src: '../../../lib/reveal.js/plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+				{ src: '../../../lib/reveal.js/plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+				{ src: '../../../lib/reveal.js/plugin/highlight/highlight.js', async: true, callback: function() { hljs.configure({tabReplace: highlightjsTabSize}); hljs.initHighlightingOnLoad(); } },
+				{ src: '../../../lib/reveal.js/plugin/zoom-js/zoom.js', async: true },
+				{ src: '../../../lib/reveal.js/plugin/notes/notes.js', async: true }
+			]
+		});
+	</script>
+	<!-- linkedin badge -->
+
+</body>
+</html>
