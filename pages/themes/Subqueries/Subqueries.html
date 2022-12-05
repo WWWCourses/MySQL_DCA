@@ -640,7 +640,16 @@
 			<dt>A correlated subquery is a subquery that uses the data from the outer query.</dt>
 			<dt>A correlated subquery can not be executed as a standalone query</dt>
 			<dt>A <span class="note">correlated subquery is evaluated once for each row in the outer query</span>.</dt>
-			<dt>Correlated queries are more efficient than JOINS or VIEWS <span class="note">only if either the outer or inner query returns a small records</span></dt>
+			<dt>Correlated queries are more efficient than JOINS or VIEWS <span class="note">only if either the outer or inner query returns a small records</span>. Otherwise => use JOINS or VIEWS.</dt>
+			<dt>Example:</dt>
+			<pre><code rel="MySQL" class="sql">
+				SELECT *
+				FROM users AS u
+				WHERE NOT EXISTS (
+					SELECT * FROM addresses AS a
+					WHERE u.id=a.user_id
+				);
+			</code></pre>
 		</dl>
 	</section>
 </section>

@@ -138,4 +138,15 @@ WHERE NOT EXISTS (
 );
 
 
+/* -------------------------- Correlated Subqueries ------------------------- */
+
+SELECT * FROM books as b
+WHERE b.pub_year = (
+	SELECT pub_year FROM books
+	WHERE b.pub_year = pub_year
+);
+
+SELECT a.death_year - a.birth_year as lived,a.lname
+FROM authors AS a;
+
 
