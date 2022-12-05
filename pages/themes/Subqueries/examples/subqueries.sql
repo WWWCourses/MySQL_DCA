@@ -137,3 +137,5 @@ WHERE NOT EXISTS (
 	WHERE u.id=a.user_id
 );
 
+
+

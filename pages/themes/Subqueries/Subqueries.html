@@ -645,6 +645,51 @@
 	</section>
 </section>
 
+<section data-min="50"><h1>Subquery in the FROM clause</h1></section>
+<section><h2>Subquery in the FROM clause</h2>
+	<section><h3>Overview</h3>
+		<dl class="fa">
+			<dt>When you use a subquery in the FROM clause, the result set returned from a subquery is used as a temporary table.</dt>
+			<dt>Consider next standard query:</dt>
+			<pre><code rel="MySQL" class="sql">
+				SELECT author_id, COUNT(author_id) as book_count FROM books AS b
+				GROUP BY b.author_id;
+
+				-- OUTPUT:
+				+-----------+------------+
+				| author_id | book_count |
+				+-----------+------------+
+				| 1         | 6          |
+				| 2         | 8          |
+				| 3         | 21         |
+				+-----------+------------+
+			</code></pre>
+			<dt>We can select MAX(book_count) if we use it as a subquery in FROM:</dt>
+			<pre><code rel="MySQL" class="sql">
+				SELECT MAX(t.book_count) AS max_book_count
+				FROM (
+					SELECT author_id, COUNT(author_id) as book_count FROM books AS b
+						GROUP BY b.author_id
+				) as t;
+
+				+----------------+
+				| max_book_count |
+				+----------------+
+				| 21             |
+				+----------------+
+
+			</code></pre>
+		</dl>
+	</section>
+	<section><h3>Notes</h3>
+		<dl class="fa">
+			<dt>Using subquery in FROM clause should generally be avoided if you can rewrite your query in a different way. Some of the reasons are:</dt>
+			<dd>No indexes can be used on a table returned by subquery in FROM, i.e. a temporary table in memory</dd>
+			<dd>A subquery in the FROM clause can't be correlated subquery as it can't be evaluated per row of the outer query.</dd>
+		</dl>
+	</section>
+</section>
+
 
 <!-- <section data-min="1" id='hw'><h1>Exercises</h1></section>
 <section><h2>Task1: __task_title__</h2>
