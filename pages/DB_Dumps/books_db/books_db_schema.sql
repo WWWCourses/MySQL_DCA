@@ -15,5 +15,6 @@ CREATE TABLE book (
     author_id SMALLINT(3) UNSIGNED NOT NULL,
     book_name VARCHAR(250) NOT NULL,
     pub_year SMALLINT(4) UNSIGNED DEFAULT NULL,
+    price DECIMAL(5,2)  UNSIGNED NOT NULL,
     primary key (id)
 );

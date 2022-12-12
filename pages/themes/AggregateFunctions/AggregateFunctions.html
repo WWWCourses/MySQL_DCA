@@ -1,0 +1,569 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<title>AggregateFunctions</title>
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+	<link rel="icon" type="image/x-icon" href="../../../outfit/images/favicons/mysql_logo.png">
+	<!-- css & themes include -->
+	<link rel="stylesheet" href="../../../lib/reveal.js/css/reveal.css">
+	<link rel="stylesheet" href="../../../outfit/css/themes/light.css" id="theme">
+	<!-- Printing and PDF exports -->
+	<script>
+		var link = document.createElement( 'link' );
+		link.rel = 'stylesheet';
+		link.type = 'text/css';
+		link.href = window.location.search.match( /print-pdf/gi ) ? '../../../lib/reveal.js/css/print/pdf.css' : '../../../lib/reveal.js/css/print/paper.css';
+		document.getElementsByTagName( 'head' )[0].appendChild( link );
+	</script>
+	<!--[if lt IE 9]>
+	<script src="lib/js/html5shiv.js"></script>
+	<![endif]-->
+	<!-- custom -->
+	<link rel="stylesheet" href="../../../outfit/css/reveal.js.css">
+	<base target="_blank">
+</head>
+<body>
+	<div class="reveal default center" data-transition-speed="default" data-background-transition="default">
+		<div class="top_links">
+			<a class="home_link" href="../../../index.html#AggregateFunctions" target="_top"><i class="fa fa-home"></i></a>
+			<span class="help_link"><i class="fa fa-question"></i></span>
+			<div class="help_text">
+				<div class="note">Keyboard shortcuts:</div>
+				<div><span>N/Спейс</span><span>Next Slide</span></div>
+				<div><span>P</span><span>Previous Slide</span></div>
+				<div><span>O</span><span>Slides Overview</span></div>
+				<div><span>ctrl+left click</span><span>Zoom Element</span></div>
+				<div class="print-howto"><br>If you want print version => add '<code>?print-pdf</code>' <br> at the end of slides URL (remove '#' fragment) and then print. <br>
+				Like: https://wwwcourses.github.io/...CourseIntro.html?print-pdf </div>
+			</div>
+		</div>
+		<div class="footer theme_switch">
+			<a href="#" onclick="document.getElementById('theme').setAttribute('href','../../../outfit/css/themes/dark.css'); return false;">Dark</a>
+			<a href="#" onclick="document.getElementById('theme').setAttribute('href','../../../outfit/css/themes/light.css'); return false;">Light</a>
+			<!-- <a href="#" onclick="document.getElementById('theme').setAttribute('href','../../../outfit/css/themes/projector.css'); return false;">Projector</a> -->
+		</div>
+		<div class="slides">
+<!--
+########################################################
+##################### SLIDES START #####################
+########################################################
+-->
+<section><h1>Aggregate Functions</h1></section>
+<section data-transition="zoom">
+	<section>
+		<div class="copyright">
+			<div class="note">
+				<p>Created for</p>
+			</div>
+			<div class="company">
+				<a href="https://progressbg.net/javascript-advanced-with-reactjs/">
+				<img src="../../../outfit/images/logos/ProgressBG_logo_529_127.png" alt="ProgressBG_logo">
+				</a>
+			</div>
+		</div>
+	</section>
+	<section class="copyright" data-transition="zoom" style="margin-top: -2em;">
+		<div class="note">
+			<p>Created by</p>
+		</div>
+		<div class="company">
+		   <div class="LI-profile-badge"  data-version="v1" data-size="large" data-locale="en_US" data-type="vertical" data-theme="dark" data-vanity="ivapopova"><a class="LI-simple-link" href="https://bg.linkedin.com/in/ivapopova?trk=profile-badge">Iva E. Popova</a></div>
+		</div>
+		<!-- <div class="author">
+			<a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-sa/4.0/88x31.png"></a>
+		</div> -->
+	</section>
+</section>
+
+<section data-min="50"><h1>Example table: drinks</h1></section>
+<section><h2>Example table: drinks</h2>
+	<section><h3>Example table: drinks</h3>
+		<dl class="fa">
+			<dt>In next slides the `drinks` table will be used with next data:</dt>
+			<a href="./images/drinks_table_data.png"><img src="./images/drinks_table_data.png" alt=""></a>
+			<dt>You can load the schema and the data of `drinks` table using next dump file: <a href="./dumps/drinks_dump.sql">drinks_dump.sql</a></dt>
+		</dl>
+	</section>
+</section>
+
+
+<section data-min="5"><h1>Aggregate Functions Overview</h1></section>
+<section><h2>Aggregate Functions Overview</h2>
+  	<section>
+		<dl class="fa">
+			<dt>With Aggregate Functions we can perform calculations (like SUM(), MAX(), ...) on values in a column.</dt>
+			<dt class="note">Every Aggregate Function works on multiple values and returns a single value!</dt>
+			<dt>SQL ISO standard defines these 5 aggregate functions: <span class="note">COUNT</span>, <span class="note">SUM</span>, <span class="note">AVG</span>, <span class="note">MIN</span> and <span class="note">MAX</span></dt>
+			<dt>MySQL supports many other aggregate functions</dt>
+			<dd>Reference: <a href="https://dev.mysql.com/doc/refman/8.0/en/aggregate-functions.html">Aggregate Function Descriptions</a></dd>
+		</dl>
+  	</section>
+  	<section><h3>Syntax</h3>
+		<dl class="fa">
+			<pre><code rel="MySQL" class="sql">
+				function_name(DISTINCT|ALL expression)
+			</code></pre>
+			<dt>Where:</dt>
+			<dd><b>function_name</b> - can be any of the aggregate functions</dd>
+			<dd><b>DISTINCT|ALL</b> - if ALL (which is default) then the calculation will include all values, including duplicates. If DISTINCT is specified - the calculation will be over distinct values.</dd>
+			<dd><b>expression</b> - can be a column or expression which involves column and arithmetic operators.</dd>
+			<dt>Example:</dt>
+			<pre><code rel="Terminal" class="bash">
+
+				SELECT SUM(c2), SUM(c2+10), SUM(DISTINCT c2) FROM t1;
+				+---------+------------+------------------+
+				| SUM(c2) | SUM(c2+10) | SUM(DISTINCT c2) |
+				+---------+------------+------------------+
+				| 13      | 53         | 10               |
+				+---------+------------+------------------+
+
+
+				SELECT  * FROM t1;
+				+----+----+
+				| c1 | c2 |
+				+----+----+
+				| A  | 2  |
+				| B  | 3  |
+				| C  | 3  |
+				| D  | 5  |
+				+----+----+
+
+			</code></pre>
+		</dl>
+	</section>
+	<section><h3>Usage notes</h3>
+		<dl class="fa">
+			<dt>Aggregate functions are often used with a GROUP BY clause to group values into subsets</dt>
+			<dt>Note that if we do not use a GROUP BY, then aggregate functions works on whole column. In that case, we can not include in select list a column without an aggregate function.</dt>
+			<dt>Consider next example:</dt>
+			<pre><code rel="MySQL" class="sql">
+				SELECT  * FROM t1;
+				+----+----+
+				| c1 | c2 |
+				+----+----+
+				| A  | 2  |
+				| B  | 3  |
+				| C  | 3  |
+				| D  | 5  |
+				+----+----+
+
+				SELECT c1,SUM(c2) FROM t1;
+
+				ERROR:(1140, "In aggregated query without GROUP BY, expression #1 of SELECT list contains nonaggregated column 'dca.t1.c1'; this is incompatible with sql_mode=only_full_group_by")
+			</code></pre>
+			<dt>In next topics, we'll be focusing deeper on GROUP BY with Aggregate Functions </dt>
+		</dl>
+	</section>
+</section>
+
+<section data-min="50"><h1>Main Aggragate Functions</h1></section>
+<section><h2>Main Aggragate Functions</h2>
+	<section><h3>COUNT()</h3>
+		<dl class="fa">
+			<dt>The COUNT() function returns the number of the value in a set.</dt>
+			<dt>The result is a BIGINT value.</dt>
+			<dt><code>COUNT(expr)</code> - returns a count of the number of non-NULL values of expr.</dt>
+			<dd>expr usually is a col_name, but can be any expression like col_name+10</dd>
+			<dt><code>COUNT(*) - returns a count of the number of rows retrieved, whether or not they contain NULL values.</code></dt>
+			<dt><code>COUNT(DISTINCT expr) - returns a count of the number of rows with different non-NULL expr values</code></dt>
+			<dt>Reference: <a href="https://dev.mysql.com/doc/refman/8.0/en/aggregate-functions.html#function_count">COUNT Function</a></dt>
+			<dt>Example:</dt>
+			<pre><code rel="MySQL" class="sql">
+				SELECT COUNT(*), COUNT(c2),COUNT(DISTINCT c2) FROM t1;
+				+----------+-----------+--------------------+
+				| COUNT(*) | COUNT(c2) | COUNT(DISTINCT c2) |
+				+----------+-----------+--------------------+
+				| 5        | 4         | 3                  |
+				+----------+-----------+--------------------+
+
+				SELECT * FROM t1;
+				+----+--------+
+				| c1 | c2     |
+				+----+--------+
+				| A  | 2      |
+				| B  | 3      |
+				| C  | &lt;null&gt; |
+				| D  | 3      |
+				| E  | 5      |
+				+----+--------+
+
+			</code></pre>
+		</dl>
+	</section>
+	<section><h3>AVG()</h3>
+		<dl class="fa">
+			<dt><code>AVG(expr)</code> - returns the average of non-NULL values of expr.</dt>
+			<dt><code>AVG(DISTINCT expr)</code> - returns the average of the distinct values of  expr.</dt>
+			<dt>Reference: <a href="https://dev.mysql.com/doc/refman/8.0/en/aggregate-functions.html#function_avg">AVG Function</a> </dt>
+			<dt>Example</dt>
+			<pre><code rel="MySQL" class="sql" style="min-height: 45vh;">
+				SELECT AVG(c2),AVG(DISTINCT c2) FROM t1;
+				+---------+------------------+
+				| AVG(c2) | AVG(DISTINCT c2) |
+				+---------+------------------+
+				| 3.2500  | 3.3333           |
+				+---------+------------------+
+
+				SELECT SUM(c2)/COUNT(c2), SUM(c2)/COUNT(*), SUM(DISTINCT c2)/COUNT(DISTINCT c2) FROM t1;
+				+-------------------+------------------+-------------------------------------+
+				| SUM(c2)/COUNT(c2) | SUM(c2)/COUNT(*) | SUM(DISTINCT c2)/COUNT(DISTINCT c2) |
+				+-------------------+------------------+-------------------------------------+
+				| 3.2500            | 2.6000           | 3.3333                              |
+				+-------------------+------------------+-------------------------------------+
+
+				SELECT * FROM t1;
+				+----+--------+
+				| c1 | c2     |
+				+----+--------+
+				| A  | 2      |
+				| B  | 3      |
+				| C  | &lt;null&gt; |
+				| D  | 3      |
+				| E  | 5      |
+				+----+--------+
+
+			</code></pre>
+		</dl>
+	</section>
+	<section><h3>SUM()</h3>
+		<dl class="fa">
+			<dt><code>SUM(expr)</code> - returns the sum of non-NULL values of expr.</dt>
+			<dt><code>SUM(DISTINCT expr)</code> - returns the sum of the distinct values of  expr.</dt>
+			<dt>Reference: <a href="https://dev.mysql.com/doc/refman/8.0/en/aggregate-functions.html#function_sum">SUM Function</a> </dt>
+			<dt>Example</dt>
+			<pre><code rel="MySQL" class="sql">
+				SELECT SUM(c2),SUM(DISTINCT c2) FROM t1;
+				+---------+------------------+
+				| SUM(c2) | SUM(DISTINCT c2) |
+				+---------+------------------+
+				| 13      | 10               |
+				+---------+------------------+
+
+				SELECT * FROM t1;
+				+----+--------+
+				| c1 | c2     |
+				+----+--------+
+				| A  | 2      |
+				| B  | 3      |
+				| C  | &lt;null&gt; |
+				| D  | 3      |
+				| E  | 5      |
+				+----+--------+
+			</code></pre>
+		</dl>
+	</section>
+	<section><h3>MIN and MAX Functions</h3>
+		<dl class="fa">
+			<dt><code>MIN(expr)</code> - returns the minimum of non-NULL values of expr.</dt>
+			<dt>DISTINCT keyword may be used, but will produce the same results</dt>
+			<dt>Note that, expr can be string</dt>
+			<dt>MAX works the same way, but returns the maximum value.</dt>
+			<dt>Reference: <a href="https://dev.mysql.com/doc/refman/8.0/en/aggregate-functions.html#function_min">MIN Function</a>, <a href="https://dev.mysql.com/doc/refman/8.0/en/aggregate-functions.html#function_max">MAX Function</a> </dt>
+			<dt>Example</dt>
+			<pre><code rel="MySQL" class="sql" style="min-height: 45vh;">
+				SELECT MIN(c1), MIN(C2), MIN(DISTINCT c2) FROM t1;
+				+---------+---------+------------------+
+				| MIN(c1) | MIN(C2) | MIN(DISTINCT c2) |
+				+---------+---------+------------------+
+				| A       | 2       | 2                |
+				+---------+---------+------------------+
+
+				SELECT MAX(c1), MAX(C2), MAX(DISTINCT c2) FROM t1;
+				+---------+---------+------------------+
+				| MAX(c1) | MAX(C2) | MAX(DISTINCT c2) |
+				+---------+---------+------------------+
+				| E       | 5       | 5                |
+				+---------+---------+------------------+
+
+				SELECT * FROM t1;
+				+----+--------+
+				| c1 | c2     |
+				+----+--------+
+				| A  | 2      |
+				| B  | 3      |
+				| C  | &lt;null&gt; |
+				| D  | 3      |
+				| E  | 5      |
+				+----+--------+
+
+			</code></pre>
+		</dl>
+	</section>
+</section>
+
+<section data-min="50"><h1>Aggreagate Functions in WHERE ?</h1></section>
+<section><h2>Aggreagate Functions in WHERE ?</h2>
+	<section>
+		<dl class="fa">
+			<dt>Aggregate functions are not allowed to be used directly in WHERE clause, because <span class="note">WHERE clause is used for filtering data before aggregation</span></dt>
+			<dt>Consider next code which tryes to answer the question "Which is the country which consumes most wine"?</dt>
+			<pre><code rel="MySQL" class="sql">
+				SELECT country, wine_servings
+				FROM drinks
+				WHERE wine_servings=MAX(wine_servings);
+
+				ERROR: 'Invalid use of group function'
+			</code></pre>
+			<dt>But we can use Aggragate Functions in scalar subqueries, so the next code is the right solution:</dt>
+			<pre><code rel="MySQL" class="sql">
+				SELECT country, wine_servings
+				FROM drinks
+				WHERE wine_servings=(
+					select MAX(wine_servings) from drinks
+				);
+
+				+---------+---------------+
+				| country | wine_servings |
+				+---------+---------------+
+				| France  | 370           |
+				+---------+---------------+
+
+			</code></pre>
+		</dl>
+	</section>
+</section>
+
+
+<section data-min="50"><h1>Aggragate Functions with GROUP BY</h1></section>
+<section><h2>Aggragate Functions with GROUP BY</h2>
+	<section><h3>Overview</h3>
+		<dl class="fa">
+			<dt>Aggregate Functions are often used with GROUP BY clause <span class="note">to apply some calculations and return a single value for each subgroup</span>.</dt>
+			<pre><code rel="MySQL" class="sql">
+				SELECT key,sum(data)
+				FROM input
+				GROUP BY key;
+			</code></pre>
+			<a href="./images/split-apply-combine.png"><img src="./images/split-apply-combine.png" alt="split-apply-combine.png"></a>
+		</dl>
+	</section>
+	<section><h3>Syntax</h3>
+		<dl class="fa">
+			<pre><code rel="MySQL" class="sql">
+				SELECT
+					c1, c2,..., cn, aggregate_function(ci)
+				FROM
+					table_name
+				WHERE
+					where_conditions
+				GROUP BY c1 , c2,...,cn;
+			</code></pre>
+			<dt>GROUP BY must follow SELECT and WHERE clauses</dt>
+			<dt>GROUP BY must be before the HAVING, ORDER BY and LIMIT clauses.</dt>
+
+		</dl>
+	</section>
+	<section><h3 class="advanced">ONLY_FULL_GROUP_BY notes</h3>
+		<dl class="fa">
+			<dt>MySQL implements detection of functional dependence. <br> If the ONLY_FULL_GROUP_BY SQL mode is enabled (which it is by default), MySQL rejects queries for which the select list refer to nonaggregated columns that are neither named in the GROUP BY clause nor are functionally dependent on them</dt>
+			<dt>Reference: <a href="https://dev.mysql.com/doc/refman/8.0/en/group-by-handling.html">MySQL Handling of GROUP BY</a></dt>
+			<dt>If we try to execute next query an error shoud be raised, as `country` column is not in GROUP BY clause, nor is in aggregate function</dt>
+			<pre><code rel="MySQL" class="sql">
+				SELECT country
+				FROM drinks
+				GROUP BY continent;
+
+				-- ERROR: Expression #1 of SELECT list is not in GROUP BY clause and contains nonaggregated column 'dca.drinks.country' which is not functionally dependent on columns in GROUP BY clause; this is incompatible with sql_mode=only_full_group_by
+			</code></pre>
+			<dt>But next query will be ok, as `continent` is in GROUP BY, and `country` is aggregated</dt>
+			<pre><code rel="MySQL" class="sql">
+				SELECT continent, count(country)
+				FROM drinks
+				GROUP BY continent;
+			</code></pre>
+		</dl>
+	</section>
+	<section><h3>Example: Find MIN and MAX for each group</h3>
+		<dl class="fa">
+			<dt>Task: Find MIN and MAX beer_servings value for each continent</dt>
+			<pre><code rel="MySQL" class="sql">
+				SELECT continent, MIN(beer_servings), MAX(beer_servings)
+				FROM drinks
+				GROUP BY continent;
+
+				+-----------+--------------------+--------------------+
+				| continent | MIN(beer_servings) | MAX(beer_servings) |
+				+-----------+--------------------+--------------------+
+				| AS        | 0                  | 247                |
+				| EU        | 0                  | 361                |
+				| AF        | 0                  | 376                |
+				|           | 1                  | 285                |
+				| SA        | 93                 | 333                |
+				| OC        | 0                  | 306                |
+				+-----------+--------------------+--------------------+
+			</code></pre>
+		</dl>
+	</section>
+	<section><h3>Example: Counting rows per group</h3>
+		<dl class="fa">
+			<dt>Task: find the number of countries in each continent</dt>
+			<pre><code rel="MySQL" class="sql">
+				SELECT continent, count(country) as countries
+				FROM drinks
+				GROUP BY continent;
+
+				+-----------+-----------+
+				| continent | countries |
+				+-----------+-----------+
+				| AS        | 44        |
+				| EU        | 45        |
+				| AF        | 53        |
+				|           | 23        |
+				| SA        | 12        |
+				| OC        | 16        |
+				+-----------+-----------+
+			</code></pre>
+		</dl>
+	</section>
+	<section><h3>Example: count with other aggregate function</h3>
+		<dl class="fa">
+			<dt>Task: find the number of countries in each continent and the maximum wine_servings value</dt>
+			<pre><code rel="MySQL" class="sql">
+				SELECT continent, count(country) as countries, MAX(wine_servings)
+				FROM drinks
+				GROUP BY continent;
+
+				+-----------+-----------+--------------------+
+				| continent | countries | MAX(wine_servings) |
+				+-----------+-----------+--------------------+
+				| AS        | 44        | 123                |
+				| EU        | 45        | 370                |
+				| AF        | 53        | 233                |
+				|           | 23        | 100                |
+				| SA        | 12        | 221                |
+				| OC        | 16        | 212                |
+				+-----------+-----------+--------------------+
+			</code></pre>
+		</dl>
+	</section>
+</section>
+
+<section data-min="50"><h1>HAVING clause</h1></section>
+<section><h2>HAVING clause</h2>
+	<section><h3>Overview</h3>
+		<dl class="fa">
+			<dt>The HAVING clause is used in the SELECT statement to specify filter conditions for a group of rows or aggregates.</dt>
+			<dt>HAVING clause must come after any GROUP BY clause and before any ORDER BY clause</dt>
+			<dt>The SQL standard requires that HAVING must reference only columns in the GROUP BY clause or columns used in aggregate functions</dt>
+			<dt>If the HAVING clause is used without the GROUP BY clause it will behaves like the WHERE clause.</dt>
+			<dt>Basic Syntax</dt>
+			<pre><code rel="MySQL" class="sql">
+				SELECT
+					select_list
+				FROM
+					table_name
+				WHERE
+					search_condition
+				GROUP BY
+					group_by_expression
+				HAVING
+					group_condition;
+			</code></pre>
+		</dl>
+	</section>
+	<section><h3>Example: Find continents which have more than 30 countries</h3>
+		<dl class="fa">
+			<dt>Note, that the column referenced in HAVING clause is used in aggregate function</dt>
+			<pre><code rel="MySQL" class="sql">
+				SELECT continent, count(country)
+				FROM drinks
+				GROUP BY continent
+				HAVING count(country) > 30;
+
+				+-----------+----------------+
+				| continent | count(country) |
+				+-----------+----------------+
+				| AS        | 44             |
+				| EU        | 45             |
+				| AF        | 53             |
+				+-----------+----------------+
+			</code></pre>
+		</dl>
+	</section>
+	<section><h3>Example: Find continents which consumes more wine than spirit</h3>
+		<dl class="fa">
+			<pre><code rel="MySQL" class="sql">
+				SELECT continent, AVG(wine_servings) as average_wine,AVG(spirit_servings) as average_spirit
+				FROM drinks
+				GROUP BY continent
+				HAVING average_wine>average_spirit
+				ORDER BY continent;
+
+				+-----------+--------------+----------------+
+				| continent | average_wine | average_spirit |
+				+-----------+--------------+----------------+
+				| EU        | 142.2222     | 132.5556       |
+				+-----------+--------------+----------------+
+
+			</code></pre>
+		</dl>
+	</section>
+</section>
+
+<!-- <section data-min="1" id='hw'><h1>Exercises</h1></section>
+<section><h2>Task1: __task_title__</h2>
+  <section><h3>__task_description__</h3>
+  	<dl class="fa">
+  		<dt></dt>
+  	</dl>
+  </section>
+</section> -->
+
+<section class="disclaimer" data-background="../../../outfit/images/for_slides/the_end_on_sand.jpg">
+	 <p>These slides are based on</p>
+	 <p>customised version of </p>
+	 <p><a href="http://hakim.se/">Hakimel</a>'s <a href="http://lab.hakim.se/reveal-js">reveal.js</a></p>
+	 <p>framework</p>
+</section>
+<!--
+########################################################
+##################### SLIDES END   #####################
+########################################################
+-->
+		</div>
+	</div>
+	<!-- Custom processing -->
+	<script src="../../../outfit/js/slides.js"></script>
+	<!-- external scripts -->
+	<script src="../../../lib/reveal.js/lib/js/head.min.js"></script>
+	<script src="../../../lib/reveal.js/js/reveal.js"></script>
+	<!-- init reveal -->
+	<script>
+		// Full list of configuration options available at:
+		// https://github.com/hakimel/reveal.js#configuration
+		var highlightjsTabSize = '  ';
+		Reveal.initialize({
+			controls: true,
+			progress: true,
+			slideNumber: 'c/t',
+			keyboard: true,
+			history: true,
+			center: true,
+			width: '100%',
+			height: '100%',
+			// slide transition
+			transition: 'concave', // none/fade/slide/convex/concave/zoom
+			// Factor of the display size that should remain empty around the content
+			margin: 0.1,
+			// shift+maous click to zoom in/out element
+			zoomKey: 'ctrl',
+			// theme: Reveal.getQueryHash().theme, // available themes are in /css/theme
+			// transition: Reveal.getQueryHash().transition || 'default'
+			// Optional reveal.js plugins
+			dependencies: [
+				{ src: '../../../lib/reveal.js/lib/js/classList.js', condition: function() { return !document.body.classList; } },
+				{ src: '../../../lib/reveal.js/plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+				{ src: '../../../lib/reveal.js/plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+				{ src: '../../../lib/reveal.js/plugin/highlight/highlight.js', async: true, callback: function() { hljs.configure({tabReplace: highlightjsTabSize}); hljs.initHighlightingOnLoad(); } },
+				{ src: '../../../lib/reveal.js/plugin/zoom-js/zoom.js', async: true },
+				{ src: '../../../lib/reveal.js/plugin/notes/notes.js', async: true }
+			]
+		});
+	</script>
+	<!-- linkedin badge -->
+
+</body>
+</html>
