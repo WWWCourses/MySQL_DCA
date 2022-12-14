@@ -1,17 +1,22 @@
-USE books_db;
+-- Active: 1663945334496@@127.0.0.1@3306@books_store_db
 
-INSERT INTO author(fname,lname,birth_year,death_year) VALUES
+ALTER TABLE authors AUTO_INCREMENT = 1;
+
+INSERT INTO authors(fname,lname,birth_year,death_year) VALUES
     ('Kurt'   , 'Vonnegut', '1922','2007'),
     ('Douglas', 'Adams'   , '1952','2001'),
     ('Charles', 'Dodgson' , '1832','1898'),
     ('Georgi','Gospodinov',1968,NULL),
     ('Alek','Popov',1966,NULL),
     ('Georgi','Markov',1929,1978);
-;
-INSERT INTO book(author_id, book_name,pub_year,price) VALUES
+
+
+ALTER TABLE authors AUTO_INCREMENT = 1;
+
+INSERT INTO books(author_id,book_name,pub_year,price) VALUES
     (1, 'The Sirens of Titan', 1959, 23.56),
     (1, 'Mother Night', 1961, 14.25),
-    (1, 'Cat\'s Cradle', 1963, 20.02), # note: the single quote inside string should be escaped!
+    (1, 'Cat\'s Cradle', 1963, 20.02),
     (1, 'God Bless You', 1965, 23.5),
     (1, 'Slaughterhouse', 1969, 43.23),
     (1, 'Breakfast of Champions', 1973, 12.34),
@@ -20,7 +25,7 @@ INSERT INTO book(author_id, book_name,pub_year,price) VALUES
     (2, 'Life', 1982, 12.90),
     (2, 'So Long', 1984, 9.89),
     (2, 'Young Zaphod Plays It Safe', 1986, 5.60),
-    (2, "Dirk Gently's Holistic Detective Agency", 1987, 23.90),  #note: or we can use double quotes for string delimiter
+    (2, "Dirk Gently's Holistic Detective Agency", 1987, 23.90),
     (2, 'The Long Dark Tea', 1988, 43.5),
     (2, 'Last Chance to See', 1990, 5.78),
     (2, 'Mostly Harmless', 1992, 23.5),
