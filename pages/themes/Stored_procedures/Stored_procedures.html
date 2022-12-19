@@ -1,0 +1,624 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<title>Stored_procedures</title>
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+	<link rel="icon" type="image/x-icon" href="../../../outfit/images/favicons/mysql_logo.png">
+	<!-- css & themes include -->
+	<link rel="stylesheet" href="../../../lib/reveal.js/css/reveal.css">
+	<link rel="stylesheet" href="../../../outfit/css/themes/light.css" id="theme">
+	<!-- Printing and PDF exports -->
+	<script>
+		var link = document.createElement( 'link' );
+		link.rel = 'stylesheet';
+		link.type = 'text/css';
+		link.href = window.location.search.match( /print-pdf/gi ) ? '../../../lib/reveal.js/css/print/pdf.css' : '../../../lib/reveal.js/css/print/paper.css';
+		document.getElementsByTagName( 'head' )[0].appendChild( link );
+	</script>
+	<!--[if lt IE 9]>
+	<script src="lib/js/html5shiv.js"></script>
+	<![endif]-->
+	<!-- custom -->
+	<link rel="stylesheet" href="../../../outfit/css/reveal.js.css">
+	<base target="_blank">
+</head>
+<body>
+	<div class="reveal default center" data-transition-speed="default" data-background-transition="default">
+		<div class="top_links">
+			<a class="home_link" href="../../../index.html#Stored_procedures" target="_top"><i class="fa fa-home"></i></a>
+			<span class="help_link"><i class="fa fa-question"></i></span>
+			<div class="help_text">
+				<div class="note">Keyboard shortcuts:</div>
+				<div><span>N/Спейс</span><span>Next Slide</span></div>
+				<div><span>P</span><span>Previous Slide</span></div>
+				<div><span>O</span><span>Slides Overview</span></div>
+				<div><span>ctrl+left click</span><span>Zoom Element</span></div>
+				<div class="print-howto"><br>If you want print version => add '<code>?print-pdf</code>' <br> at the end of slides URL (remove '#' fragment) and then print. <br>
+				Like: https://wwwcourses.github.io/...CourseIntro.html?print-pdf </div>
+			</div>
+		</div>
+		<div class="footer theme_switch">
+			<a href="#" onclick="document.getElementById('theme').setAttribute('href','../../../outfit/css/themes/dark.css'); return false;">Dark</a>
+			<a href="#" onclick="document.getElementById('theme').setAttribute('href','../../../outfit/css/themes/light.css'); return false;">Light</a>
+			<!-- <a href="#" onclick="document.getElementById('theme').setAttribute('href','../../../outfit/css/themes/projector.css'); return false;">Projector</a> -->
+		</div>
+		<div class="slides">
+<!--
+########################################################
+##################### SLIDES START #####################
+########################################################
+-->
+<section><h1>Stored Procedures</h1></section>
+<section data-transition="zoom">
+	<section>
+		<div class="copyright">
+			<div class="note">
+				<p>Created for</p>
+			</div>
+			<div class="company">
+				<a href="https://progressbg.net/javascript-advanced-with-reactjs/">
+				<img src="../../../outfit/images/logos/ProgressBG_logo_529_127.png" alt="ProgressBG_logo">
+				</a>
+			</div>
+		</div>
+	</section>
+	<section class="copyright" data-transition="zoom" style="margin-top: -2em;">
+		<div class="note">
+			<p>Created by</p>
+		</div>
+		<div class="company">
+		   <div class="LI-profile-badge"  data-version="v1" data-size="large" data-locale="en_US" data-type="vertical" data-theme="dark" data-vanity="ivapopova"><a class="LI-simple-link" href="https://bg.linkedin.com/in/ivapopova?trk=profile-badge">Iva E. Popova</a></div>
+		</div>
+		<!-- <div class="author">
+			<a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-sa/4.0/88x31.png"></a>
+		</div> -->
+	</section>
+</section>
+
+
+<section data-min="50"><h1>User Defined Variables</h1></section>
+<section><h2>User Defined Variables</h2>
+	<section><h3>SET variable</h3>
+		<dl class="fa">
+			<dt>A User Defined Variable is written as <code>@var_name</code> where, <code>var_name</code> is the name of the variable and can consist of alphanumeric characters, '.', '_', and '$'.</dt>
+			<dd>Variable name can include other characters like- {!, #, ^, -, ..}  if they are quoted</dd>
+			<dt>User Defined Variable is defined with SET statement:</dt>
+			<pre><code rel="Syntax" class="sql">
+				SET @var_name = expr [, @var_name = expr]
+			</code></pre>
+			<dt>Example:</dt>
+			<pre><code rel="MySQL" class="sql">
+				SET @myName = 'Iva E. Popova';
+
+				SELECT @myName;
+				+---------------+
+				| @myName       |
+				+---------------+
+				| Iva E. Popova |
+				+---------------+
+			</code></pre>
+			<dt>Example 2</dt>
+			<pre><code rel="MySQL" class="sql">
+				SET @a=3,@b=4;
+				SET @rect_area=@a*@b;
+
+				SELECT @a,@b,@rect_area;
+				+----+----+------------+
+				| @a | @b | @rect_area |
+				+----+----+------------+
+				| 3  | 4  | 12         |
+				+----+----+------------+
+			</code></pre>
+		</dl>
+	</section>
+	<section><h3>Assign variable in SELECT</h3>
+		<dl class="fa">
+			<dt>We can assign a value to a variable in the SELECT statement using the <code><b>:=</b></code> operator.</dt>
+			<pre><code rel="MySQL" class="sql">
+				SELECT @min_price:=MIN(price) FROM books;
+			</code></pre>
+			<dt>We can also use the <a href="https://dev.mysql.com/doc/refman/8.0/en/select-into.html">SELECT ... INTO Statement</a></dt>
+			<pre><code rel="MySQL" class="sql">
+				SELECT MAX(price) INTO @max_price FROM books;
+			</code></pre>
+		</dl>
+	</section>
+	<section><h3>Use Case</h3>
+		<dl class="fa">
+			<dt>User Defined Variables enables you to pass values from one statement to another.</dt>
+			<dd>You can store a value in a user-defined variable in one statement and refer to it later in another statement.</dd>
+			<pre><code rel="MySQL" class="sql">
+				SELECT @min_price:=MIN(price), @max_price:=MAX(price)
+				FROM books;
+
+				SELECT * FROM books
+				WHERE price IN (@min_price, @max_price);
+
+				+----+-----------+----------------------------+----------+--------+
+				| id | author_id | book_name                  | pub_year | price  |
+				+----+-----------+----------------------------+----------+--------+
+				| 11 | 2         | Young Zaphod Plays It Safe | 1986     | 5.60   |
+				| 35 | 3         | Curiosa Mathematica I      | 1888     | 295.40 |
+				+----+-----------+----------------------------+----------+--------+
+			</code></pre>
+		</dl>
+	</section>
+	<section><h3>Notes</h3>
+		<dl class="fa">
+			<dt>User Defined Variable can take values only from following data types: integer, floating-point, decimal, binary, non-binary string or NULL</dt>
+			<dd> A value of a type other than one of the permissible types is converted to a permissible type</dd>
+			<dd>Assignment of decimal and real values does not preserve the precision or scale of the value</dd>
+			<dt>User-defined variables are session specific</dt>
+			<dd>A user-defined variable set by one client can not be seen by other client</dd>
+			<dd>All variables for a given client session are automatically freed when that client exits.</dd>
+
+			<dt>Reference: <a href="https://dev.mysql.com/doc/refman/8.0/en/user-variables.html"> User-Defined Variables</a></dt>
+		</dl>
+	</section>
+</section>
+<section><h2>Server System Variables</h2></section>
+<section><h3 class="advanced">Server System Variables</h3>
+	<dl class="fa">
+		<dt>The MySQL server maintains many system variables configured to a default value</dt>
+		<dt>System Variables are prefixed with '@@'</dt>
+		<dt>To see the current values of a system variable use the SHOW VARIABLES statement or SELECT @@var_name.</dt>
+		<pre><code rel="MySQL" class="sql">
+			SHOW VARIABLES LIKE 'connect_timeout';
+			+-----------------+-------+
+			| Variable_name   | Value |
+			+-----------------+-------+
+			| connect_timeout | 10    |
+			+-----------------+-------+
+
+			SELECT @@connect_timeout;
+			+-------------------+
+			| @@connect_timeout |
+			+-------------------+
+			| 10                |
+			+-------------------+
+		</code></pre>
+	</dl>
+</section>
+
+<section data-min="5"><h1>Stored Procedures (SP)</h1></section>
+<section><h2>Stored Procedures (SP)</h2>
+  	<section><h3>Overview</h3>
+		<dl class="fa">
+			<dt>A Stored Procedure in SQL is a group of <span class="note">pre-compiled</span> SQL statements that are stored together under unique name in a database.</dt>
+			<dd>when you drop a database, any stored routines () in the database are also dropped.</dd>
+			<dt>SP allows for <span class="note">quick reuse</span> of language constructs</dt>
+			<dd>thus, reduce the amount of code that must be written</dd>
+			<dt>Better Performance</dt>
+			<dd>Stored Procedures are <span class="note">compiled once and stored in executable form</span>, thus the response is quick.</dd>
+			<dd>The <span class="note">executable code is automatically cached</span>, thus lowers the memory and network traffic.</dd>
+
+		</dl>
+  	</section>
+	<section><h3>Create and Call a Procedure</h3>
+		<dl class="fa">
+			<dt>Create Procedure (Reference: <a href="https://dev.mysql.com/doc/refman/8.0/en/create-procedure.html">CREATE PROCEDURE</a> )</dt>
+			<pre><code rel="MySQL" class="sql">
+				[DELIMITER {custom delimiter}]
+				CREATE PROCEDURE sp_name ([proc_parameter[,...]])
+				BEGIN
+				-- execution code
+				END;
+				[DELIMITER ;] -- reset custom delimiter
+			</code></pre>
+			<dd>It’s recommended to have the stored proc names begin with <code>sp_</code> or <code>sp</code> to identify that it’s a proc.</dd>
+			<dd>Each <i>proc_parameter</i> can be of the form: <code>[IN | OUT | INOUT] param_name param_type</code></dd>
+			<ul style="font-size:.8em; line-height: 1.5em; padding-left:3em">
+				<li>IN param: allows you to pass values into the procedure</li>
+				<li>OUT param: allows you to pass value back from procedure to the calling program</li>
+			</ul>
+			<dd>By default, mysql itself recognizes the semicolon as a statement delimiter, so you must redefine the delimiter temporarily to cause mysql to pass the entire stored program definition to the server.</dd>
+			<dd>Example</dd>
+			<pre><code rel="MySQL" class="sql">
+				CREATE PROCEDURE spUpdatePrice(IN id_to_update int, IN new_price decimal)
+				BEGIN
+					UPDATE books SET price=new_price where id=id_to_update;
+				END;
+			</code></pre>
+			<dt>Execute a Procedure</dt>
+			<pre><code rel="MySQL" class="sql">
+				CALL spUpdatePrice(1,999);
+			</code></pre>
+		</dl>
+	</section>
+	<section><h3>Delete Stored Procedure</h3>
+		<dl class="fa">
+			<dt>The DROP PROCEDURE statement deletes a stored procedure created by the CREATE PROCEDURE statement.</dt>
+			<pre><code rel="MySQL" class="sql">
+				DROP PROCEDURE [IF EXISTS] stored_procedure_name;
+			</code></pre>
+			<pre><code rel="MySQL" class="sql">
+				DROP PROCEDURE spUpdatePrice;
+			</code></pre>
+		</dl>
+	</section>
+	<section><h3>Example: SP without parameters </h3>
+		<dl class="fa" style="min-width: 40vw;">
+			<dt>Create the spGetAllAuthors procedure</dt>
+			<pre><code rel="MySQL" class="sql">
+				DELIMITER //
+
+				CREATE PROCEDURE spGetAllAuthors()
+				BEGIN
+					SELECT * FROM authors;
+				END;
+
+				DELIMITER ;
+			</code></pre>
+			<dt>Use spGetAllAuthors</dt>
+			<pre><code rel="MySQL" class="sql">
+				CALL spGetAllAuthors();
+
+				+----+---------+------------+------------+------------+
+				| id | fname   | lname      | birth_year | death_year |
+				+----+---------+------------+------------+------------+
+				| 1  | Kurt    | Vonnegut   | 1922       | 2007       |
+				| 2  | Douglas | Adams      | 1952       | 2001       |
+				| 3  | Charles | Dodgson    | 1832       | 1898       |
+				| 4  | Georgi  | Gospodinov | 1968       | &lt;null&gt;     |
+				| 5  | Alek    | Popov      | 1966       | &lt;null&gt;     |
+				| 6  | Georgi  | Markov     | 1929       | 1978       |
+				+----+---------+------------+------------+------------+
+
+			</code></pre>
+		</dl>
+	</section>
+	<section><h3>Example: SP with IN parameters </h3>
+		<dl class="fa" style="min-width: 40vw;">
+			<dt>Create the spGetBooksByAuthorFname procedure</dt>
+			<pre><code rel="MySQL" class="sql">
+				DELIMITER //
+				CREATE PROCEDURE spGetBooksByAuthorFname(IN author_fname VARCHAR(200))
+				BEGIN
+					SELECT * FROM books as b
+					JOIN authors as a
+					ON b.author_id=a.id
+					WHERE a.fname=author_fname;
+				END;
+				DELIMITER ;
+			</code></pre>
+			<dt>Use spGetBooksByAuthorFname</dt>
+			<dd>Note, that when calling the <code>spGetBooksByAuthorFname</code> we must pass exactly one argument. Otherwise, an Error will be thrown.</dd>
+			<pre><code rel="MySQL" class="sql">
+				CALL spGetBooksByAuthorFname();
+				-- Error: 'Incorrect number of arguments for PROCEDURE books_store_db.spGetBooksByAuthorFname; expected 1, got 0'
+
+				CALL spGetBooksByAuthorFname('Kurt','Vonnegut');
+				-- Error: 'Incorrect number of arguments for PROCEDURE books_store_db.spGetBooksByAuthorFname; expected 1, got 2')
+
+				CALL spGetBooksByAuthorFname('Kurt');
+				+----+-----------+------------------------+----------+--------+----+-------+----------+------------+------------+
+				| id | author_id | book_name              | pub_year | price  | id | fname | lname    | birth_year | death_year |
+				+----+-----------+------------------------+----------+--------+----+-------+----------+------------+------------+
+				| 1  | 1         | The Sirens of Titan    | 1959     | 999.00 | 1  | Kurt  | Vonnegut | 1922       | 2007       |
+				| 2  | 1         | Mother Night           | 1961     | 14.25  | 1  | Kurt  | Vonnegut | 1922       | 2007       |
+				| 3  | 1         | Cat's Cradle           | 1963     | 20.02  | 1  | Kurt  | Vonnegut | 1922       | 2007       |
+				| 4  | 1         | God Bless You          | 1965     | 23.50  | 1  | Kurt  | Vonnegut | 1922       | 2007       |
+				| 5  | 1         | Slaughterhouse         | 1969     | 45.00  | 1  | Kurt  | Vonnegut | 1922       | 2007       |
+				| 6  | 1         | Breakfast of Champions | 1973     | 12.34  | 1  | Kurt  | Vonnegut | 1922       | 2007       |
+				+----+-----------+------------------------+----------+--------+----+-------+----------+------------+------------+
+
+
+			</code></pre>
+		</dl>
+	</section>
+	<section><h3>Example: SP with IN and OUT parameters </h3>
+		<dl class="fa" style="min-width: 40vw;">
+			<dt>Create the spGetMostExpensiveAuthorBook procedure</dt>
+			<pre><code rel="MySQL" class="sql">
+				DELIMITER //
+				CREATE PROCEDURE spGetMostExpensiveAuthorBook
+				(IN author_fname VARCHAR(200), OUT max_price DECIMAL(6.2))
+				BEGIN
+					SELECT MAX(b.price) INTO max_price
+					FROM books as b
+					JOIN authors as a
+					ON b.author_id=a.id
+					WHERE a.fname=author_fname;
+				END;
+				DELIMITER ;
+			</code></pre>
+			<dt>Use spGetMostExpensiveAuthorBook</dt>
+			<dd>As we have an OUT parameter that would be returning a value, we must specify a variable as a placeholder to retrieve the returned value</dd>
+			<pre><code rel="MySQL" class="sql">
+				CALL spGetMostExpensiveAuthorBook('Kurt', @max_book_price);
+				-- Query OK, 1 row affected
+
+				SELECT @max_book_price;
+				+-----------------+
+				| @max_book_price |
+				+-----------------+
+				| 999             |
+				+-----------------+
+			</code></pre>
+		</dl>
+	</section>
+	<section><h3>Example: SP with INOUT parameters </h3>
+		<dl class="fa" style="min-width: 40vw;">
+			<dt>An INOUT parameter is initialized by the caller, can be modified by the procedure, and any change made by the procedure is visible to the caller when the procedure returns.</dt>
+			<dt>Create the spIncrementCount procedure</dt>
+			<pre><code rel="MySQL" class="sql">
+				DELIMITER //
+				CREATE PROCEDURE spIncrementCount
+				(INOUT counter INT, IN increment INT)
+				BEGIN
+					SET counter=counter+increment;
+				END;
+				DELIMITER ;
+			</code></pre>
+			<dt>Use spIncrementCount</dt>
+
+			<pre><code rel="MySQL" class="sql">
+				-- set initial @counter value:
+				SET @counter = 1;
+
+				-- increment @counter with 5:
+				CALL spIncrementCount(@counter,5);
+
+				-- check the result:
+				SELECT @counter;
+				+----------+
+				| @counter |
+				+----------+
+				| 6        |
+				+----------+
+
+			</code></pre>
+		</dl>
+	</section>
+</section>
+
+<section data-min="50"><h1>Stored Functions (SF)</h1></section>
+<section><h2>Stored Functions (SF)</h2>
+	<section><h3>Overview</h3>
+		<dl class="fa">
+			<dt>Stored function is a special kind stored program that MUST returns a single value</dt>
+			<dt>With SF we can increase the expressiveness of MySQL as we can use our functions to encapsulate common formulas or business rules that are reusable among SQL statements</dt>
+			<dt>We can use a stored function in SQL statements wherever an expression is used, just like the built-in MySQL functions</dt>
+		</dl>
+	</section>
+	<section><h3>Create Stored Function</h3>
+		<dl class="fa">
+			<dt>Basic Syntax (Reference: <a href="https://dev.mysql.com/doc/refman/8.0/en/create-procedure.html">CREATE PROCEDURE and CREATE FUNCTION Statements</a> )</dt>
+			<pre><code rel="MySQL" class="sql">
+				DELIMITER //
+
+				CREATE FUNCTION function_name([func_parameter[,...]])
+				RETURNS datatype
+				[[NOT] DETERMINISTIC]
+				BEGIN
+				-- statements (must have RETURN expr)
+				END //
+
+				DELIMITER ;
+			</code></pre>
+			<dt>By default, all <b>func_parameters</b> are the IN parameters. You cannot specify IN , OUT or INOUT modifiers to parameters</dt>
+			<dt>We must specify the data type of the return value in the RETURNS statement, which can be any valid MySQL data types.</dt>
+			<dt>If we don’t specify DETERMINISTIC, MySQL uses the NOT DETERMINISTIC option by default.</dt>
+			<dd>A deterministic function always returns the same result for the same input parameters whereas a non-deterministic function returns different results for the same input parameters.</dd>
+			<dt>Inside the body (BEGIN...END) section, we mist specify at least one RETURN statement</dt>
+			<dd>The RETURN statement returns a value to the calling programs</dd>
+			<dd> Whenever the RETURN statement is reached, the execution of the stored function is terminated immediately</dd>
+		</dl>
+	</section>
+	<section><h3>Example: incrementCount()</h3>
+		<dl class="fa">
+			<dt>Create incrementCount function</dt>
+			<pre><code rel="MySQL" class="sql">
+				CREATE FUNCTION incrementCount
+				(counter INT, increment INT)
+				RETURNS INT
+				DETERMINISTIC
+				BEGIN
+					RETURN counter+increment;
+				END;
+			</code></pre>
+			<dt>We can use incrementCount function directly in select:</dt>
+			<pre><code rel="MySQL" class="sql">
+				SELECT incrementCount(1,5);
+			</code></pre>
+			<dt>Or store the return value in custom variable</dt>
+			<pre><code rel="MySQL" class="sql">
+				SET @counter = 1;
+
+				SET @counter=incrementCount(@counter,5);
+
+				SELECT @counter;
+
+				+----------+
+				| @counter |
+				+----------+
+				| 6        |
+				+----------+
+
+			</code></pre>
+		</dl>
+	</section>
+	<section><h3>Example: levToDollar()</h3>
+		<dl class="fa" style="min-width: 40vw;">
+			<dt>Create levToDollar function</dt>
+			<pre><code rel="MySQL" class="sql">
+				CREATE FUNCTION levToDollar
+				(lev DECIMAL(10,2) UNSIGNED)
+				RETURNS DECIMAL(10,2) UNSIGNED
+				DETERMINISTIC
+				BEGIN
+					RETURN lev*0.54;
+				END;
+			</code></pre>
+			<dt>Use levToDollar</dt>
+			<pre><code rel="MySQL" class="sql">
+				SELECT levToDollar(price) as price_in_dollars
+				FROM books
+				LIMIT 5;
+
+				+------------------+
+				| price_in_dollars |
+				+------------------+
+				| 539.46           |
+				| 7.70             |
+				| 10.81            |
+				| 12.69            |
+				| 24.30            |
+				+------------------+
+
+			</code></pre>
+		</dl>
+	</section>
+</section>
+
+
+<section data-min="50"><h1>Local Variables in Stored Routines</h1></section>
+<section><h2>Local Variables in Stored Routines</h2>
+	<section><h3>Overview</h3>
+		<dl class="fa">
+			<dt>We can use Local Variables inside Stored Routines for temporary storage of data concerning the routine.</dt>
+			<dd>Stored Routines refers to both Stored Procedures and Stored Functions</dd>
+			<dt>Local variables have a scope limited to the routine itself.</dt>
+			<dt>Local variables needs to be declared using DECLARE before accessing it.</dt>
+			<pre><code rel="MySQL" class="sql">
+				DECLARE varName DATATYPE [DEFAULT value];
+			</code></pre>
+			<dt>DECLARE is permitted only inside a BEGIN ... END compound statement and must be at its start, before any other statements.</dt>
+			<pre><code rel="MySQL" class="sql">
+				-- if we write that outside stored program, an Error will be raised
+				DECLARE x INT;
+			</code></pre>
+			<dt>No @ prefix like user-defined variable is needed when declaring Local variable.</dt>
+			<dt>Local variables can be used as input parameters inside a stored procedure, as well.</dt>
+		</dl>
+	</section>
+	<section><h3>Example</h3>
+		<pre><code rel="MySQL" class="sql">
+			DELIMITER //
+			CREATE FUNCTION spGetBookPriceLevel(book_id INT)
+			RETURNS VARCHAR(20)
+			DETERMINISTIC
+			BEGIN
+						DECLARE book_level VARCHAR(20) DEFAULT 'none';
+				DECLARE book_price DECIMAL(5,2) DEFAULT 0;
+
+				--Get book price:
+				SELECT price INTO book_price
+				FROM books
+				WHERE books.id=book_id;
+
+				-- Define book level
+				CASE
+					WHEN book_price<=10 THEN
+						SET book_level='Cheep';
+					WHEN (book_price>10 AND book_price<50) THEN
+						SET book_level='Affordable';
+					WHEN book_price>=50 THEN
+						SET book_level='Expensive';
+				END CASE;
+
+				-- Return the book level
+				RETURN book_level;
+			END //
+
+			DELIMITER ;
+		</code></pre>
+	</section>
+</section>
+
+<section data-min="50"><h1>Stored Procedures vs Stored Functions</h1></section>
+<section><h2>Stored Procedures vs Stored Functions</h2>
+	<section>
+		<table>
+			<tr>
+				<th>Stored Procedure</th>
+				<th>Stored Functions</th>
+			</tr>
+			<tr>
+				<td>Can return zero, single or multiple values.</td>
+				<td>Must return exactly <b>one</b> value.</td>
+			</tr>
+			<tr>
+				<td>SP can have input/output parameters</td>
+				<td>SF can have only input parameters</td>
+			</tr>
+			<tr>
+				<td>SP <b>can not be used</b> inside SELECT, WHERE or HAVING clauses.</td>
+				<td>SF <b>can be used</b> inside SELECT, WHERE or HAVING clauses.</td>
+			</tr>
+			<tr>
+				<td>A procedure is invoked with CALL statement to perform an operation such as modifying a table or processing retrieved records.</td>
+				<td>A function is invoked within an expression and returns a single value directly to the caller to be used in the expression.</td>
+			</tr>
+		</table>
+	</section>
+</section>
+
+
+<!-- <section data-min="1" id='hw'><h1>Exercises</h1></section>
+<section><h2>Task1: __task_title__</h2>
+  <section><h3>__task_description__</h3>
+  	<dl class="fa">
+  		<dt></dt>
+  	</dl>
+  </section>
+</section> -->
+
+<section class="disclaimer" data-background="../../../outfit/images/for_slides/the_end_on_sand.jpg">
+	 <p>These slides are based on</p>
+	 <p>customised version of </p>
+	 <p><a href="http://hakim.se/">Hakimel</a>'s <a href="http://lab.hakim.se/reveal-js">reveal.js</a></p>
+	 <p>framework</p>
+</section>
+<!--
+########################################################
+##################### SLIDES END   #####################
+########################################################
+-->
+		</div>
+	</div>
+	<!-- Custom processing -->
+	<script src="../../../outfit/js/slides.js"></script>
+	<!-- external scripts -->
+	<script src="../../../lib/reveal.js/lib/js/head.min.js"></script>
+	<script src="../../../lib/reveal.js/js/reveal.js"></script>
+	<!-- init reveal -->
+	<script>
+		// Full list of configuration options available at:
+		// https://github.com/hakimel/reveal.js#configuration
+		var highlightjsTabSize = '  ';
+		Reveal.initialize({
+			controls: true,
+			progress: true,
+			slideNumber: 'c/t',
+			keyboard: true,
+			history: true,
+			center: true,
+			width: '100%',
+			height: '100%',
+			// slide transition
+			transition: 'concave', // none/fade/slide/convex/concave/zoom
+			// Factor of the display size that should remain empty around the content
+			margin: 0.1,
+			// shift+maous click to zoom in/out element
+			zoomKey: 'ctrl',
+			// theme: Reveal.getQueryHash().theme, // available themes are in /css/theme
+			// transition: Reveal.getQueryHash().transition || 'default'
+			// Optional reveal.js plugins
+			dependencies: [
+				{ src: '../../../lib/reveal.js/lib/js/classList.js', condition: function() { return !document.body.classList; } },
+				{ src: '../../../lib/reveal.js/plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+				{ src: '../../../lib/reveal.js/plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+				{ src: '../../../lib/reveal.js/plugin/highlight/highlight.js', async: true, callback: function() { hljs.configure({tabReplace: highlightjsTabSize}); hljs.initHighlightingOnLoad(); } },
+				{ src: '../../../lib/reveal.js/plugin/zoom-js/zoom.js', async: true },
+				{ src: '../../../lib/reveal.js/plugin/notes/notes.js', async: true }
+			]
+		});
+	</script>
+	<!-- linkedin badge -->
+
+</body>
+</html>
