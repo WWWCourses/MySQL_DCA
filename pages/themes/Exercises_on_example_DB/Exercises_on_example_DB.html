@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 	<meta charset="utf-8">
-	<title>__cliche_title__</title>
+	<title>Exercises_on_example_DB</title>
 	<meta name="apple-mobile-web-app-capable" content="yes">
 	<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
@@ -28,7 +28,7 @@
 <body>
 	<div class="reveal default center" data-transition-speed="default" data-background-transition="default">
 		<div class="top_links">
-			<a class="home_link" href="../../../index.html#__cliche_title__" target="_top"><i class="fa fa-home"></i></a>
+			<a class="home_link" href="../../../index.html#Exercises_on_example_DB" target="_top"><i class="fa fa-home"></i></a>
 			<span class="help_link"><i class="fa fa-question"></i></span>
 			<div class="help_text">
 				<div class="note">Keyboard shortcuts:</div>
@@ -51,7 +51,8 @@
 ##################### SLIDES START #####################
 ########################################################
 -->
-<section><h1>__presentation_title__</h1></section>
+<section><h1>Изготвяне на цялостна база данни. <br><br>
+	Упражнение върху предварително подготвена база данни</h1></section>
 <section data-transition="zoom">
 	<section>
 		<div class="copyright">
@@ -79,21 +80,135 @@
 </section>
 
 
-<section data-min="5"><h1>___MainSectionTitle___</h1></section>
-<section><h2>___MainSectionTitle___</h2>
-  <section><h3>___SubSectionTitle___</h3>
-
-  </section>
+<section data-min="50"><h1>Data Modeling</h1></section>
+<section><h2>Data Modeling</h2>
+	<section><h3>Conceptual Model</h3>
+		<dl class="fa">
+			<dt>Conceptual Data defines <span class="note">what</span> the system should contains in terms of business concepts and rules.</dt>
+			<dt>Let's model the data about a song and its performers</dt>
+			<a href="./images/song_db/song_db_Conceptual_Diagram.png"><img src="./images/song_db/song_db_Conceptual_Diagram.png" alt="song_db_Conceptual_Diagram.png"></a>
+		</dl>
+	</section>
+	<section><h3>Logical Data Model</h3>
+		<dl class="fa">
+			<dt>Logical Data Model defines <span class="note">how</span> the system should be implemented regardless of the DBMS.</dt>
+			<dt>The logical data model adds further information (data types and etc.) to the conceptual data model elements.</dt>
+			<a href="./images/song_db/song_db_Logical_Diagram.png"><img src="./images/song_db/song_db_Logical_Diagram.png" alt="song_db_Logical_Diagram.png"></a>
+		</dl>
+	</section>
+	<section><h3>Physical Data Model</h3>
+		<dl class="fa">
+			<dt>Physical Data Model describes <span class="note">how</span> the system will be implemented using a specific DBMS system.</dt>
+			<a href="./images/song_db/song_db_Physical_Diagram.png"><img src="./images/song_db/song_db_Physical_Diagram.png" alt="song_db_Physical_Diagram.png"></a>
+		</dl>
+	</section>
+	<section><h3>DB implementation</h3>
+		<dl class="fa">
+			<dt>The actual code which creates the schema.</dt>
+			<a href="./dumps/song_db/song_db_schema.sql">song_db_schema.sql</a>
+		</dl>
+	</section>
 </section>
 
-<!-- <section data-min="1" id='hw'><h1>Exercises</h1></section>
-<section><h2>Task1: __task_title__</h2>
-  <section><h3>__task_description__</h3>
-  	<dl class="fa">
-  		<dt></dt>
-  	</dl>
-  </section>
-</section> -->
+
+<section data-min="50"><h1>Create reports on examle DB</h1></section>
+<section><h2>Create reports on examle DB</h2>
+	<section><h3>Get familiar with movie_db</h3>
+		<dl class="fa"><h3>Full data schema</h3>
+			<a href="./images/movie_db/movie_db_Full.png"><img src="./images/movie_db/movie_db_Full.png" alt="movie_db_Full.png"></a>
+		</dl>
+	</section>
+	<section><h3>Part 1: movies data schema</h3>
+		<dl class="fa">
+			<a href="./images/movie_db/movie_db_Part_1.png"><img src="./images/movie_db/movie_db_Part_1.png" alt="movie_db_Part_1.png"></a>
+		</dl>
+	</section>
+	<section><h3>Part 2: soundtracks data schema</h3>
+		<dl class="fa">
+			<a href="./images/movie_db/movie_db_Part_2_Soundtrack.png"><img src="./images/movie_db/movie_db_Part_2_Soundtrack.png" alt="movie_db_Part_2_Soundtrack.png"></a>
+		</dl>
+	</section>
+</section>
+
+
+<section data-min="50"><h1>Export MySQL Reports into CSV Files</h1></section>
+<section><h2>Export MySQL Reports into CSV Files</h2>
+	<section><h3>Overview</h3>
+		<dl class="fa">
+			<dt>We can generate a CSV file from an SQL query with <code>SELECT ... INTO OUTFILE</code></dt>
+			<pre><code rel="MySQL Syntax" class="sql">
+				SELECT ... INTO OUTFILE 'file_name'
+					[CHARACTER SET charset_name]
+					[export_options]
+
+				export_options:
+					[{FIELDS | COLUMNS}
+						[TERMINATED BY 'string']
+						[[OPTIONALLY] ENCLOSED BY 'char']
+						[ESCAPED BY 'char']
+					]
+					[LINES
+						[STARTING BY 'string']
+						[TERMINATED BY 'string']
+					]
+			</code></pre>
+			<pre><code rel="MySQL" class="sql">
+				SELECT *
+					FROM sales_by_store
+					INTO OUTFILE './sales-by-store.csv'
+					FIELDS ENCLOSED BY '"'
+					TERMINATED BY ','
+					LINES TERMINATED BY '\n'
+				;
+			</code></pre>
+			<dt>Reference: <a href="https://dev.mysql.com/doc/refman/8.0/en/select-into.html">SELECT ... INTO Statement</a></dt>
+		</dl>
+	</section>
+	<section><h3>Exporting with header row - simple query</h3>
+		<dl class="fa">
+			<dt>If we have a simple query and we need to add a header row in output csv, then:</dt>
+			<pre><code rel="MySQL" class="sql">
+				SELECT 'col1', 'col2', 'col3'
+				UNION ALL
+				SELECT col1, col2, col3
+					FROM table
+					INTO OUTFILE '/path/outfile.csv'
+					FIELDS ENCLOSED BY '"'
+					TERMINATED BY ','
+					LINES TERMINATED BY '\n';
+			</code></pre>
+		</dl>
+
+	</section>
+	<section><h3>Exporting with header row - complex query</h3>
+		<dl class="fa">
+			<dt>If we have a complex query (with ORDER BY, GROUP BY) and we need to add a header row in output csv, then:</dt>
+		</dl>
+		<pre><code rel="MySQL" class="sql">
+			SELECT 'col1', 'col2', 'col3'
+			UNION ALL
+			SELECT * FROM (
+				-- some complex query
+				SELECT col1, col2, col3
+					FROM table
+				) as t
+			INTO OUTFILE '/path/outfile.csv'
+			FIELDS ENCLOSED BY '"'
+			TERMINATED BY ','
+			LINES TERMINATED BY '\n'
+		</code></pre>
+	</section>
+</section>
+
+
+<section data-min="50"><h1>Exerceses on creating reports</h1></section>
+<section><h2>Exerceses on creating reports</h2>
+	<section>
+		<dl class="fa">
+			<dt>The tasks are given in next <a href="./examples/movie_db_reports_tasks.html">movie_db_reports_tasks.html</a> file.</dt>
+		</dl>
+	</section>
+</section>
 
 <section class="disclaimer" data-background="../../../outfit/images/for_slides/the_end_on_sand.jpg">
 	 <p>These slides are based on</p>
